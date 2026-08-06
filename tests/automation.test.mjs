@@ -24,3 +24,31 @@ test("the launchd runbook schedules weekdays after the database generation windo
   assert.match(runbook, /独立运行副本/)
   assert.match(runbook, /不包含[^\n]*密码|不写入[^\n]*密码/)
 })
+
+test("Pages tolerates a slow deployment queue", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8")
+
+  assert.match(workflow, /uses: actions\/deploy-pages@v4\n\s+with:\n\s+timeout: 1800000/)
+})
+
+test("the local watchdog verifies evidence and retries only a completed failed Pages run", async () => {
+  const script = await readFile(new URL("../ops/verify-daily-publication.sh", import.meta.url), "utf8")
+
+  assert.match(script, /TZ=Asia\/Shanghai date \+%F/)
+  assert.match(script, /repos\/\$repo_slug\/contents\/\$commitment_path/)
+  assert.match(script, /Attest public ledger evidence/)
+  assert.match(script, /suya-market-regime-ledger\/data\/index\.json/)
+  assert.match(script, /gh run rerun/)
+  assert.match(script, /run_status.*in_progress|in_progress.*run_status/)
+  assert.match(script, /osascript/)
+  assert.doesNotMatch(script, /shared\.env|PG_NAS|PASSWORD/)
+})
+
+test("the launchd runbook documents two publication checks after the daily run", async () => {
+  const runbook = await readFile(new URL("../ops/launchd.md", import.meta.url), "utf8")
+
+  assert.match(runbook, /20:20/)
+  assert.match(runbook, /20:40/)
+  assert.match(runbook, /verify-daily-publication\.sh/)
+  assert.doesNotMatch(runbook, /pmset|wakeorpoweron|定时唤醒/)
+})
