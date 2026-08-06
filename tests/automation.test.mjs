@@ -40,6 +40,8 @@ test("the local watchdog verifies evidence and retries only a completed failed P
   assert.match(script, /suya-market-regime-ledger\/data\/index\.json/)
   assert.match(script, /gh run rerun/)
   assert.match(script, /run_status.*in_progress|in_progress.*run_status/)
+  assert.match(script, /conclusion \/\/ "none"/)
+  assert.match(script, /join\("\|"\)/)
   assert.match(script, /osascript/)
   assert.doesNotMatch(script, /shared\.env|PG_NAS|PASSWORD/)
 })
