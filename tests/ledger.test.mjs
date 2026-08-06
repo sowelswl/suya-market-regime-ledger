@@ -3,38 +3,54 @@ import test from "node:test"
 
 import {
   MARKET_STATES,
+  SIGNAL_LEVELS,
   createLedgerEntry,
   verifyReveal,
 } from "../lib/ledger.mjs"
 
 const base = {
-  signalDate: "2026-08-07",
-  generatedAt: "2026-08-06T20:00:00+08:00",
-  state: "弱多",
+  sequence: 1,
+  previousCommitment: null,
+  asOfTradeDate: "2026-08-05",
+  committedAt: "2026-08-05T20:00:00+08:00",
+  sourceGeneratedAt: "2026-08-05T19:31:14+08:00",
+  signalLevel: 1,
+  signalLabel: "弱多",
   nonce: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
 }
 
-test("the ledger accepts exactly the five settled market states", () => {
+test("the ledger maps exactly five database levels to the settled market states", () => {
   assert.deepEqual(MARKET_STATES, ["强空", "弱空", "看平", "弱多", "强多"])
+  assert.deepEqual(SIGNAL_LEVELS, {
+    "-2": "强空",
+    "-1": "弱空",
+    "0": "看平",
+    "1": "弱多",
+    "2": "强多",
+  })
 
-  for (const state of MARKET_STATES) {
-    assert.doesNotThrow(() => createLedgerEntry({ ...base, state }))
+  for (const [level, label] of Object.entries(SIGNAL_LEVELS)) {
+    assert.doesNotThrow(() => createLedgerEntry({ ...base, signalLevel: Number(level), signalLabel: label }))
   }
 
-  assert.throws(() => createLedgerEntry({ ...base, state: "看多" }), /market state/i)
+  assert.throws(() => createLedgerEntry({ ...base, signalLevel: 1, signalLabel: "强多" }), /level.*label/i)
+  assert.throws(() => createLedgerEntry({ ...base, signalLevel: 3, signalLabel: "强多" }), /signal level/i)
 })
 
-test("a public commitment hides the state and nonce while the reveal verifies", () => {
+test("a v2 public commitment hides the state and nonce while the reveal verifies", () => {
   const { commitment, reveal } = createLedgerEntry(base)
 
-  assert.equal(commitment.schema_version, "1.0")
-  assert.equal(commitment.signal_date, base.signalDate)
-  assert.equal(commitment.generated_at, base.generatedAt)
-  assert.equal(commitment.reveal_after_trading_days, 5)
+  assert.equal(commitment.schema_version, "2.0")
+  assert.equal(commitment.as_of_trade_date, base.asOfTradeDate)
+  assert.equal(commitment.prediction_horizon, "next_trading_session")
+  assert.equal(commitment.canonicalization, "RFC8785-JCS")
+  assert.equal(commitment.reveal_after_observations, 5)
   assert.match(commitment.commitment, /^sha256:[a-f0-9]{64}$/)
-  assert.equal("state" in commitment, false)
+  assert.equal("signal_level" in commitment, false)
+  assert.equal("signal_label" in commitment, false)
   assert.equal("nonce" in commitment, false)
-  assert.equal(reveal.state, "弱多")
+  assert.equal(reveal.signal_level, 1)
+  assert.equal(reveal.signal_label, "弱多")
   assert.equal(reveal.nonce, base.nonce)
   assert.equal(verifyReveal(commitment, reveal), true)
 })
@@ -46,16 +62,33 @@ test("the commitment is deterministic and any material change fails verification
   assert.equal(first.commitment.commitment, second.commitment.commitment)
 
   for (const changedReveal of [
-    { ...first.reveal, state: "强多" },
-    { ...first.reveal, generated_at: "2026-08-06T20:01:00+08:00" },
+    { ...first.reveal, signal_level: 2, signal_label: "强多" },
+    { ...first.reveal, committed_at: "2026-08-05T20:01:00+08:00" },
     { ...first.reveal, nonce: "f".repeat(64) },
   ]) {
     assert.equal(verifyReveal(first.commitment, changedReveal), false)
   }
 })
 
-test("input dates and nonce must be explicit and well formed", () => {
-  assert.throws(() => createLedgerEntry({ ...base, signalDate: "08/07/2026" }), /signal date/i)
-  assert.throws(() => createLedgerEntry({ ...base, generatedAt: "2026-08-06" }), /generated timestamp/i)
+test("each record links to the previous public commitment", () => {
+  const first = createLedgerEntry(base)
+  const second = createLedgerEntry({
+    ...base,
+    sequence: 2,
+    previousCommitment: first.commitment.commitment,
+    asOfTradeDate: "2026-08-06",
+    committedAt: "2026-08-06T20:00:00+08:00",
+    sourceGeneratedAt: "2026-08-06T19:35:00+08:00",
+  })
+
+  assert.equal(second.commitment.previous_commitment, first.commitment.commitment)
+  assert.equal(verifyReveal(second.commitment, second.reveal), true)
+  assert.equal(verifyReveal({ ...second.commitment, previous_commitment: null }, second.reveal), false)
+  assert.throws(() => createLedgerEntry({ ...base, sequence: 2, previousCommitment: null }), /previous commitment/i)
+})
+
+test("input dates, timestamps and nonce must be explicit and well formed", () => {
+  assert.throws(() => createLedgerEntry({ ...base, asOfTradeDate: "08/05/2026" }), /trade date/i)
+  assert.throws(() => createLedgerEntry({ ...base, committedAt: "2026-08-05" }), /timestamp/i)
   assert.throws(() => createLedgerEntry({ ...base, nonce: "short" }), /nonce/i)
 })

@@ -17,12 +17,20 @@ test("repository documents the prospective proof boundary and five-state method"
 
   assert.match(readme, /事前|prospective/i)
   assert.match(readme, /五个交易日/)
+  assert.match(readme, /micro_timing_final_tail_hold_dates/)
+  assert.match(readme, /RFC\s*8785/i)
+  assert.match(readme, /Sigstore|Rekor/i)
+  assert.match(readme, /公开前端|weilisong\.com/i)
   assert.match(readme, /prepare-signal\.mjs/)
+  assert.match(readme, /publish-from-database\.mjs/)
   assert.match(readme, /reveal-signal\.mjs/)
   assert.match(readme, /verify-signal\.mjs/)
   assert.match(readme, /不公开[^\n]*(?:模型代码|实时信号)/)
   assert.match(methodology, /风险暴露/)
   assert.match(methodology, /不是[^\n]*仓位指令/)
+  assert.match(methodology, /as_of_trade_date/)
+  assert.match(methodology, /next_trading_session/)
+  assert.match(methodology, /不能[^\n]*回填|不回填/)
 })
 
 test("private pending reveals are excluded and historical research is separated", async () => {

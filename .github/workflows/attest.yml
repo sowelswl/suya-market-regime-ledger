@@ -1,0 +1,25 @@
+name: Attest public ledger evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "commitments/**/*.json"
+      - "reveals/**/*.json"
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+  artifact-metadata: write
+
+jobs:
+  attest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/attest@v4
+        with:
+          subject-path: |
+            commitments/**/*.json
+            reveals/**/*.json
