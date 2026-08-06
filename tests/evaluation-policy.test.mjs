@@ -76,6 +76,7 @@ test("evaluation v1.1 corrects the signal to one-day broad-market direction with
 test("evaluation v1.1 is included in external attestation without deleting v1", async () => {
   const workflow = await read(".github/workflows/attest.yml")
 
+  assert.match(workflow, /workflow_dispatch:/)
   assert.match(workflow, /evaluation\/v1\.json/)
   assert.match(workflow, /evaluation\/v1\.1\.json/)
   assert.match(workflow, /EVALUATION_V1\.md/)
