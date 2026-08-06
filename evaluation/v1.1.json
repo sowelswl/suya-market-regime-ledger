@@ -1,0 +1,88 @@
+{
+  "policy_id": "suya-market-regime-evaluation",
+  "version": "1.1.0",
+  "previous_version": "1.0.0",
+  "status": "frozen",
+  "effective_from": "2026-08-07",
+  "correction_reason": "correct_prediction_horizon_market_scope_and_exposure_semantics_before_performance_reporting",
+  "scope": {
+    "market": "broad_market_indices",
+    "description": "one signal for the next trading session direction of the broad equity market"
+  },
+  "benchmark": {
+    "role": "fixed_primary_statistical_proxy_not_exclusive_prediction_target",
+    "primary": {
+      "index_name": "中证500指数",
+      "index_code": "000905",
+      "publisher": "China Securities Index Co., Ltd.",
+      "price_field": "official_close",
+      "return_type": "price_return"
+    },
+    "other_broad_indices": "report_separately_under_the_same_one_day_rule"
+  },
+  "states": [
+    { "level": -2, "label": "强空", "direction": "bearish" },
+    { "level": -1, "label": "弱空", "direction": "bearish" },
+    { "level": 0, "label": "看平", "direction": "weakest_bullish" },
+    { "level": 1, "label": "弱多", "direction": "bullish" },
+    { "level": 2, "label": "强多", "direction": "strongest_bullish" }
+  ],
+  "daily": {
+    "unit": "every_valid_revealed_commitment",
+    "origin": "official_close_on_as_of_trade_date",
+    "horizons_in_trading_days": [1],
+    "return_formula": "close[t+1] / close[t] - 1",
+    "bullish_levels": [0, 1, 2],
+    "bearish_levels": [-2, -1],
+    "direction_hit": {
+      "bullish": "realized_return > 0",
+      "bearish": "realized_return < 0",
+      "zero_return": "miss"
+    },
+    "strength_evaluation": {
+      "method": "next_day_conditional_return_distributions_and_level_return_rank_correlation",
+      "expected_order": "strong_short < weak_short < flat < weak_long < strong_long"
+    }
+  },
+  "exposure": {
+    "role": "non_personalized_risk_exposure_guidance",
+    "overall_bias": "right_skewed_long",
+    "profit_engine": "long_exposure",
+    "short_exposure_role": "risk_avoidance_not_primary_profit_engine",
+    "levels": {
+      "-2": "near_zero_or_slight_short",
+      "-1": "reduced_long_no_default_short",
+      "0": "very_light_long",
+      "1": "moderate_long",
+      "2": "high_long_with_risk_limits"
+    },
+    "numeric_weights": "user_specific_and_not_frozen_in_this_policy"
+  },
+  "interval_analysis": {
+    "role": "descriptive_only_not_signal_score",
+    "reason": "the committed signal predicts only the next trading session even when equal levels repeat"
+  },
+  "corrections": {
+    "original_record_policy": "never_replace",
+    "invalidated_record_predictive_metrics": "exclude",
+    "invalidated_record_operational_metrics": "include",
+    "missing_record_policy": "report_and_never_impute"
+  },
+  "reporting": {
+    "minimum_revealed_records_for_preliminary_summary": 20,
+    "minimum_records_per_state_for_state_metric": 10,
+    "before_threshold": "counts_and_operational_completeness_only",
+    "primary_metrics": [
+      "publication_completeness",
+      "reveal_completeness",
+      "next_trading_day_direction_hit_rate",
+      "next_trading_day_conditional_return_distribution",
+      "five_level_return_monotonicity"
+    ]
+  },
+  "versioning": {
+    "mutation": "forbidden",
+    "change_process": "publish_a_new_version_and_append_a_correction_record",
+    "historical_restating": "forbidden"
+  }
+}

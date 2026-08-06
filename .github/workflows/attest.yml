@@ -7,7 +7,10 @@ on:
       - "commitments/**/*.json"
       - "reveals/**/*.json"
       - "evaluation/v1.json"
+      - "evaluation/v1.1.json"
       - "EVALUATION_V1.md"
+      - "EVALUATION_V1_1.md"
+      - "CORRECTIONS.md"
 
 permissions:
   contents: read
@@ -26,4 +29,7 @@ jobs:
             commitments/**/*.json
             reveals/**/*.json
             evaluation/v1.json
+            evaluation/v1.1.json
             EVALUATION_V1.md
+            EVALUATION_V1_1.md
+            CORRECTIONS.md

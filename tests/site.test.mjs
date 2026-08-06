@@ -17,6 +17,9 @@ test("the public site explains the ledger without requiring GitHub knowledge", a
 
   assert.match(html, /苏牙择时/)
   assert.match(html, /强空[\s\S]*弱空[\s\S]*看平[\s\S]*弱多[\s\S]*强多/)
+  assert.match(html, /看平[\s\S]*轻微多头/)
+  assert.match(html, /强空[\s\S]*轻微空头/)
+  assert.doesNotMatch(html, /看平<\/strong><small>中性观察/)
   assert.match(html, /等待揭示|验证通过/)
   assert.match(html, /不需要 GitHub|无需 GitHub/)
   assert.match(html, /id="latest-record"/)
