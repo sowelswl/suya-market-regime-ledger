@@ -25,7 +25,7 @@ test("the launchd runbook schedules weekdays after the database generation windo
   assert.match(runbook, /不包含[^\n]*密码|不写入[^\n]*密码/)
 })
 
-test("Pages is built locally into the legacy docs source without deploy-pages", async () => {
+test("the public docs snapshot is built locally without deploy-pages", async () => {
   const [packageJson, publisher] = await Promise.all([
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../ops/publish-daily.sh", import.meta.url), "utf8"),
@@ -40,29 +40,27 @@ test("Pages is built locally into the legacy docs source without deploy-pages", 
   )
 })
 
-test("the local watchdog verifies evidence and retries only a completed failed Pages run", async () => {
+test("the local watchdog verifies remote evidence, attestation and the raw public snapshot", async () => {
   const script = await readFile(new URL("../ops/verify-daily-publication.sh", import.meta.url), "utf8")
 
   assert.match(script, /TZ=Asia\/Shanghai date \+%F/)
   assert.match(script, /repos\/\$repo_slug\/contents\/\$commitment_path/)
   assert.match(script, /Attest public ledger evidence/)
-  assert.match(script, /suya-market-regime-ledger\/data\/index\.json/)
+  assert.match(script, /raw\.githubusercontent\.com\/sowelswl\/suya-market-regime-ledger\/main\/docs\/data\/index\.json/)
   assert.match(script, /gh run rerun/)
-  assert.match(script, /pages\/builds\/latest/)
-  assert.match(script, /--method POST[^\n]*pages\/builds|pages\/builds[^\n]*--method POST/s)
-  assert.match(script, /pages_status[^\n]*!=[^\n]*built/)
-  assert.doesNotMatch(script, /pages\.yml|deploy-pages/)
+  assert.doesNotMatch(script, /pages\.yml|deploy-pages|pages\/builds|workflow run/)
   assert.match(script, /conclusion \/\/ "none"/)
   assert.match(script, /join\("\|"\)/)
   assert.match(script, /osascript/)
   assert.doesNotMatch(script, /shared\.env|PG_NAS|PASSWORD/)
 })
 
-test("the launchd runbook documents two publication checks after the daily run", async () => {
+test("the launchd runbook documents two raw-data checks after the daily run", async () => {
   const runbook = await readFile(new URL("../ops/launchd.md", import.meta.url), "utf8")
 
   assert.match(runbook, /20:20/)
   assert.match(runbook, /20:40/)
   assert.match(runbook, /verify-daily-publication\.sh/)
+  assert.match(runbook, /raw\.githubusercontent\.com|公开 JSON/)
   assert.doesNotMatch(runbook, /pmset|wakeorpoweron|定时唤醒/)
 })

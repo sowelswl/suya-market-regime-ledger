@@ -3,7 +3,7 @@ set -euo pipefail
 
 ledger_repo="${SUYA_LEDGER_REPO:?SUYA_LEDGER_REPO is required}"
 repo_slug="sowelswl/suya-market-regime-ledger"
-public_data_url="https://weilisong.com/suya-market-regime-ledger/data/index.json"
+public_data_url="https://raw.githubusercontent.com/sowelswl/suya-market-regime-ledger/main/docs/data/index.json"
 as_of_date="$(TZ=Asia/Shanghai date +%F)"
 year="${as_of_date%%-*}"
 month_and_day="${as_of_date#*-}"
@@ -16,10 +16,6 @@ notify() {
     -e 'display notification (item 1 of argv) with title "苏牙择时账本"' \
     -e 'end run' \
     "$1" >/dev/null 2>&1 || true
-}
-
-request_pages_build() {
-  gh api --method POST "repos/$repo_slug/pages/builds" --silent
 }
 
 cd "$ledger_repo"
@@ -88,31 +84,6 @@ if curl -fsS --retry 2 --connect-timeout 10 \
   exit 0
 fi
 
-main_sha="$(gh api "repos/$repo_slug/commits/main" --jq '.sha')"
-pages_line="$(gh api "repos/$repo_slug/pages/builds/latest" \
-  --jq '[.status, .commit] | map(tostring) | join("|")')"
-
-if [[ -z "$pages_line" ]]; then
-  request_pages_build
-  echo "Requested Pages because no legacy build was found"
-  notify "公开页面未更新，已启动 Pages 部署"
-  exit 0
-fi
-
-IFS='|' read -r pages_status pages_sha <<< "$pages_line"
-if [[ "$pages_sha" != "$main_sha" ]]; then
-  request_pages_build
-  echo "Requested Pages for the current main commit"
-  notify "公开页面未更新，已启动最新版本部署"
-elif [[ "$pages_status" == "queued" || "$pages_status" == "building" ]]; then
-  echo "Pages build is still $pages_status"
-  notify "公开页面仍在 GitHub 部署队列中"
-elif [[ "$pages_status" != "built" ]]; then
-  request_pages_build
-  echo "Re-requested failed legacy Pages build"
-  notify "公开页面部署失败，已自动申请重试"
-else
-  request_pages_build
-  echo "Re-requested Pages because the successful build is still stale"
-  notify "公开页面缓存未更新，已重新部署"
-fi
+echo "Raw public snapshot does not include $as_of_date" >&2
+notify "巡检失败：公开 JSON 尚未包含今天的承诺"
+exit 1

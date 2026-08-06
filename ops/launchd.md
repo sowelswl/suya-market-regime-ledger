@@ -4,7 +4,8 @@
 
 - 周一（Monday）到周五（Friday）20:05 执行；
 - 20:20 与 20:40 运行 `verify-daily-publication.sh`，核对本地文件、GitHub 公开证据、外部存证与网页数据；
-- 网页使用 `main/docs` 的原生 Pages 构建；仍在排队时只提示、不制造重复构建，已失败或网页仍旧时自动申请一次重试；
+- 个人主页 `/ledger/` 直接读取仓库中的公开 JSON，不需要为每天的新信号重新部署网页；
+- 巡检读取 `raw.githubusercontent.com` 上的 `docs/data/index.json`，确认当天承诺已经可供普通浏览器访问；
 - 从 `$HOME/.secrets/shared.env` 读取当前数据库配置；
 - 私有 reveal 默认保存在 `$HOME/.secrets/suya-market-regime-ledger`；
 - 配置文件不包含密码，也不写入任何密码或 token；
