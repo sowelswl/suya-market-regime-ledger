@@ -36,8 +36,9 @@ node bin/publish-from-database.mjs \
   --expected-as-of-date "$as_of_date" \
   --committed-at "$committed_at"
 node bin/reveal-due-from-database.mjs
+npm run build:pages
 
-git add commitments reveals
+git add commitments reveals docs
 if git diff --cached --quiet; then
   echo "No public ledger evidence to publish"
   exit 0

@@ -28,14 +28,18 @@ test("the public site explains the ledger without requiring GitHub knowledge", a
   assert.match(script, /verifyReveal/)
 })
 
-test("Pages and Sigstore workflows publish and attest the public evidence", async () => {
-  const [pages, attest] = await Promise.all([
-    read(".github/workflows/pages.yml"),
+test("legacy Pages output and Sigstore publish the public evidence", async () => {
+  const [sourceHtml, publishedHtml, builder, attest] = await Promise.all([
+    read("site/index.html"),
+    read("docs/index.html"),
+    read("bin/build-pages.mjs"),
     read(".github/workflows/attest.yml"),
   ])
 
-  assert.match(pages, /actions\/deploy-pages@v4/)
-  assert.match(pages, /npm run build:site/)
+  assert.equal(publishedHtml, sourceHtml)
+  assert.match(builder, /cp\(siteRoot, docsRoot/)
+  assert.match(builder, /buildSiteData/)
+  assert.match(builder, /\.nojekyll/)
   assert.match(attest, /actions\/attest@v4/)
   assert.match(attest, /id-token:\s*write/)
   assert.match(attest, /attestations:\s*write/)

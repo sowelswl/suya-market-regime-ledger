@@ -111,6 +111,7 @@ reveals/           延迟公开的原始状态
 corrections/       只追加的无效与澄清记录
 research-archive/  与前瞻账本严格分开的历史回溯研究
 site/              面向非 GitHub 用户的静态前端
+docs/              从 site/ 生成的 GitHub Pages 发布目录
 bin/               数据库生成、揭示、验证与构建命令
 lib/               canonical JSON、哈希链、数据库和文件边界
 tests/             篡改、隐私、只读读取、前端与部署测试
@@ -122,6 +123,7 @@ tests/             篡改、隐私、只读读取、前端与部署测试
 npm ci
 npm test
 npm run build:site
+npm run build:pages
 ```
 
 历史回溯材料不会与事前记录混为同一类证据。详见 [research-archive/README.md](./research-archive/README.md)。

@@ -25,10 +25,19 @@ test("the launchd runbook schedules weekdays after the database generation windo
   assert.match(runbook, /不包含[^\n]*密码|不写入[^\n]*密码/)
 })
 
-test("Pages tolerates a slow deployment queue", async () => {
-  const workflow = await readFile(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8")
+test("Pages is built locally into the legacy docs source without deploy-pages", async () => {
+  const [packageJson, publisher] = await Promise.all([
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../ops/publish-daily.sh", import.meta.url), "utf8"),
+  ])
 
-  assert.match(workflow, /uses: actions\/deploy-pages@v4\n\s+with:\n\s+timeout: 1800000/)
+  assert.match(packageJson, /"build:pages":\s*"node bin\/build-pages\.mjs"/)
+  assert.match(publisher, /npm run build:pages/)
+  assert.match(publisher, /git add commitments reveals docs/)
+  await assert.rejects(
+    readFile(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8"),
+    (error) => error?.code === "ENOENT",
+  )
 })
 
 test("the local watchdog verifies evidence and retries only a completed failed Pages run", async () => {
@@ -39,8 +48,10 @@ test("the local watchdog verifies evidence and retries only a completed failed P
   assert.match(script, /Attest public ledger evidence/)
   assert.match(script, /suya-market-regime-ledger\/data\/index\.json/)
   assert.match(script, /gh run rerun/)
-  assert.match(script, /run_status[^\n]*!=[^\n]*completed/)
-  assert.doesNotMatch(script, /run_status[^\n]*==[^\n]*(pending|queued|in_progress)/)
+  assert.match(script, /pages\/builds\/latest/)
+  assert.match(script, /--method POST[^\n]*pages\/builds|pages\/builds[^\n]*--method POST/s)
+  assert.match(script, /pages_status[^\n]*!=[^\n]*built/)
+  assert.doesNotMatch(script, /pages\.yml|deploy-pages/)
   assert.match(script, /conclusion \/\/ "none"/)
   assert.match(script, /join\("\|"\)/)
   assert.match(script, /osascript/)
