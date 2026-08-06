@@ -3,7 +3,10 @@ import { readFile } from "node:fs/promises"
 import test from "node:test"
 
 test("the daily publisher reads local secrets, publishes one fresh record and stages only evidence", async () => {
-  const script = await readFile(new URL("../ops/publish-daily.sh", import.meta.url), "utf8")
+  const [script, notifier] = await Promise.all([
+    readFile(new URL("../ops/publish-daily.sh", import.meta.url), "utf8"),
+    readFile(new URL("../ops/notify.sh", import.meta.url), "utf8"),
+  ])
 
   assert.match(script, /\.secrets\/shared\.env/)
   assert.match(script, /TZ=Asia\/Shanghai date \+%F/)
@@ -11,8 +14,14 @@ test("the daily publisher reads local secrets, publishes one fresh record and st
   assert.match(script, /reveal-due-from-database\.mjs/)
   assert.match(script, /git add commitments reveals/)
   assert.match(script, /git@github\.com:sowelswl\/suya-market-regime-ledger\.git/)
+  assert.match(script, /trap[^\n]*ERR/)
+  assert.match(script, /数据库[^\n]*新鲜|database[^\n]*fresh/i)
+  assert.match(script, /GitHub[^\n]*push|push[^\n]*GitHub/i)
+  assert.match(script, /notify_ledger/)
+  assert.match(notifier, /osascript/)
   assert.doesNotMatch(script, /git add -A/)
   assert.doesNotMatch(script, /PASSWORD=.*[^$]/)
+  assert.doesNotMatch(notifier, /PASSWORD|TOKEN|shared\.env/)
 })
 
 test("the launchd runbook schedules weekdays after the database generation window", async () => {
@@ -52,6 +61,9 @@ test("the local watchdog verifies remote evidence, attestation and the raw publi
   assert.match(script, /conclusion \/\/ "none"/)
   assert.match(script, /join\("\|"\)/)
   assert.match(script, /osascript/)
+  assert.match(script, /定时发布未完成|scheduled[^\n]*did not run/i)
+  assert.match(script, /GitHub[^\n]*(?:推送|push)/i)
+  assert.match(script, /trap[^\n]*ERR/)
   assert.doesNotMatch(script, /shared\.env|PG_NAS|PASSWORD/)
 })
 
@@ -62,5 +74,6 @@ test("the launchd runbook documents two raw-data checks after the daily run", as
   assert.match(runbook, /20:40/)
   assert.match(runbook, /verify-daily-publication\.sh/)
   assert.match(runbook, /raw\.githubusercontent\.com|公开 JSON/)
+  assert.match(runbook, /数据库[^\n]*更新|定时任务[^\n]*运行|GitHub[^\n]*推送/)
   assert.doesNotMatch(runbook, /pmset|wakeorpoweron|定时唤醒/)
 })
