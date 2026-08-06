@@ -105,7 +105,7 @@ if [[ "$pages_sha" != "$main_sha" ]]; then
   gh workflow run pages.yml --repo "$repo_slug" --ref main
   echo "Dispatched Pages for the current main commit"
   notify "公开页面未更新，已启动最新版本部署"
-elif [[ "$run_status" == "in_progress" || "$run_status" == "queued" || "$run_status" == "waiting" ]]; then
+elif [[ "$run_status" != "completed" ]]; then
   echo "Pages deployment is still $run_status"
   notify "公开页面仍在 GitHub 部署队列中"
 elif [[ "$pages_conclusion" != "success" ]]; then
