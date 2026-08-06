@@ -51,13 +51,13 @@ attestation_line="$(gh run list \
   --commit "$evidence_sha" \
   --limit 1 \
   --json databaseId,status,conclusion \
-  --jq 'if length == 0 then "" else .[0] | [.databaseId, .status, .conclusion] | @tsv end')"
+  --jq 'if length == 0 then "" else .[0] | [.databaseId, .status, (.conclusion // "none")] | map(tostring) | join("|") end')"
 
 if [[ -z "$attestation_line" ]]; then
   echo "No attestation run found for $evidence_sha" >&2
   notify "巡检提醒：今天的外部存证尚未生成"
 else
-  IFS=$'\t' read -r attestation_id attestation_status attestation_conclusion <<< "$attestation_line"
+  IFS='|' read -r attestation_id attestation_status attestation_conclusion <<< "$attestation_line"
   if [[ "$attestation_status" == "completed" && "$attestation_conclusion" != "success" ]]; then
     gh run rerun "$attestation_id" --repo "$repo_slug"
     echo "Re-ran failed attestation workflow $attestation_id"
@@ -91,7 +91,7 @@ pages_line="$(gh run list \
   --branch main \
   --limit 1 \
   --json databaseId,status,conclusion,headSha \
-  --jq 'if length == 0 then "" else .[0] | [.databaseId, .status, .conclusion, .headSha] | @tsv end')"
+  --jq 'if length == 0 then "" else .[0] | [.databaseId, .status, (.conclusion // "none"), .headSha] | map(tostring) | join("|") end')"
 
 if [[ -z "$pages_line" ]]; then
   gh workflow run pages.yml --repo "$repo_slug" --ref main
@@ -100,7 +100,7 @@ if [[ -z "$pages_line" ]]; then
   exit 0
 fi
 
-IFS=$'\t' read -r pages_id run_status pages_conclusion pages_sha <<< "$pages_line"
+IFS='|' read -r pages_id run_status pages_conclusion pages_sha <<< "$pages_line"
 if [[ "$pages_sha" != "$main_sha" ]]; then
   gh workflow run pages.yml --repo "$repo_slug" --ref main
   echo "Dispatched Pages for the current main commit"
