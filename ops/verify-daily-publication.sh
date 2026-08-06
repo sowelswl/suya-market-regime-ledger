@@ -18,6 +18,10 @@ notify() {
     "$1" >/dev/null 2>&1 || true
 }
 
+request_pages_build() {
+  gh api --method POST "repos/$repo_slug/pages/builds" --silent
+}
+
 cd "$ledger_repo"
 if [[ "$(git branch --show-current)" != "main" ]]; then
   echo "Watchdog clone must remain on main" >&2
@@ -85,35 +89,30 @@ if curl -fsS --retry 2 --connect-timeout 10 \
 fi
 
 main_sha="$(gh api "repos/$repo_slug/commits/main" --jq '.sha')"
-pages_line="$(gh run list \
-  --repo "$repo_slug" \
-  --workflow pages.yml \
-  --branch main \
-  --limit 1 \
-  --json databaseId,status,conclusion,headSha \
-  --jq 'if length == 0 then "" else .[0] | [.databaseId, .status, (.conclusion // "none"), .headSha] | map(tostring) | join("|") end')"
+pages_line="$(gh api "repos/$repo_slug/pages/builds/latest" \
+  --jq '[.status, .commit] | map(tostring) | join("|")')"
 
 if [[ -z "$pages_line" ]]; then
-  gh workflow run pages.yml --repo "$repo_slug" --ref main
-  echo "Dispatched Pages because no deployment run was found"
+  request_pages_build
+  echo "Requested Pages because no legacy build was found"
   notify "公开页面未更新，已启动 Pages 部署"
   exit 0
 fi
 
-IFS='|' read -r pages_id run_status pages_conclusion pages_sha <<< "$pages_line"
+IFS='|' read -r pages_status pages_sha <<< "$pages_line"
 if [[ "$pages_sha" != "$main_sha" ]]; then
-  gh workflow run pages.yml --repo "$repo_slug" --ref main
-  echo "Dispatched Pages for the current main commit"
+  request_pages_build
+  echo "Requested Pages for the current main commit"
   notify "公开页面未更新，已启动最新版本部署"
-elif [[ "$run_status" != "completed" ]]; then
-  echo "Pages deployment is still $run_status"
+elif [[ "$pages_status" == "queued" || "$pages_status" == "building" ]]; then
+  echo "Pages build is still $pages_status"
   notify "公开页面仍在 GitHub 部署队列中"
-elif [[ "$pages_conclusion" != "success" ]]; then
-  gh run rerun "$pages_id" --repo "$repo_slug"
-  echo "Re-ran failed Pages workflow $pages_id"
+elif [[ "$pages_status" != "built" ]]; then
+  request_pages_build
+  echo "Re-requested failed legacy Pages build"
   notify "公开页面部署失败，已自动申请重试"
 else
-  gh workflow run pages.yml --repo "$repo_slug" --ref main
-  echo "Dispatched Pages because the successful deployment is still stale"
+  request_pages_build
+  echo "Re-requested Pages because the successful build is still stale"
   notify "公开页面缓存未更新，已重新部署"
 fi
