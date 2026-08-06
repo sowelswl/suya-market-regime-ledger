@@ -28,7 +28,7 @@ test("the public site explains the ledger without requiring GitHub knowledge", a
   assert.match(script, /verifyReveal/)
 })
 
-test("legacy Pages output and Sigstore publish the public evidence", async () => {
+test("the public docs snapshot and Sigstore publish the evidence", async () => {
   const [sourceHtml, publishedHtml, builder, attest] = await Promise.all([
     read("site/index.html"),
     read("docs/index.html"),
