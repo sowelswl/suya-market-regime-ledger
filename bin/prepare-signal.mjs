@@ -7,12 +7,26 @@ import { prepareSignalFiles } from "../lib/files.mjs"
 
 async function main() {
   const options = parseArgs(process.argv.slice(2))
-  const root = path.resolve(typeof options.root === "string" ? options.root : process.cwd())
-  const result = await prepareSignalFiles(root, {
-    signalDate: requireOption(options, "signal-date"),
-    generatedAt: requireOption(options, "generated-at"),
-    state: requireOption(options, "state"),
-    ...(typeof options.nonce === "string" ? { nonce: options.nonce } : {}),
+  const publicRoot = path.resolve(typeof options.root === "string" ? options.root : process.cwd())
+  const privateRoot = path.resolve(requireOption(options, "private-root"))
+  const sequence = typeof options.sequence === "string" ? Number(options.sequence) : 1
+  const previousCommitment = typeof options["previous-commitment"] === "string"
+    ? options["previous-commitment"]
+    : null
+
+  const result = await prepareSignalFiles({
+    publicRoot,
+    privateRoot,
+    input: {
+      sequence,
+      previousCommitment,
+      asOfTradeDate: requireOption(options, "as-of-trade-date"),
+      committedAt: requireOption(options, "committed-at"),
+      sourceGeneratedAt: requireOption(options, "source-generated-at"),
+      signalLevel: Number(requireOption(options, "signal-level")),
+      signalLabel: requireOption(options, "signal-label"),
+      ...(typeof options.nonce === "string" ? { nonce: options.nonce } : {}),
+    },
   })
 
   console.log(`Public commitment: ${result.commitmentPath}`)

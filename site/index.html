@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="苏牙择时公开账本：五档市场状态的事前承诺、延迟揭示与独立验证。">
+  <meta name="theme-color" content="#0b2520">
+  <title>苏牙择时｜市场状态公开账本</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2216%22 fill=%22%230b2520%22/><text x=%2232%22 y=%2243%22 text-anchor=%22middle%22 font-size=%2234%22 fill=%22%23f3f0e8%22>苏</text></svg>">
+  <link rel="stylesheet" href="./assets/ledger.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="https://weilisong.com/" aria-label="返回宋伟力个人网站">
+      <span class="brand-mark">苏</span>
+      <span><strong>苏牙择时</strong><small>公开账本</small></span>
+    </a>
+    <nav aria-label="页面导航">
+      <a href="#history">历史记录</a>
+      <a href="#method">验证方法</a>
+      <a href="https://weilisong.com/">关于宋伟力</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-copy">
+        <p class="eyebrow">PROSPECTIVE MARKET REGIME LEDGER</p>
+        <h1>一条不靠记忆的<br>择时记录。</h1>
+        <p class="hero-intro">每天形成五档市场状态后，先公开无法反推原文的密码学承诺；五个后续交易观测日后，再公开原始状态并由浏览器自动验真。</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#latest-record">查看最新记录</a>
+          <a class="button button-secondary" href="#method">它如何防止事后修改</a>
+        </div>
+        <p class="plain-note">无需 GitHub 账号，也不需要理解代码。技术证据只在需要核查时展开。</p>
+      </div>
+
+      <article id="latest-record" class="latest-card" aria-live="polite">
+        <div class="card-topline">
+          <span class="status-pill" data-status-pill>等待第一条记录</span>
+          <span data-record-sequence>#—</span>
+        </div>
+        <div class="latest-state" data-latest-state>—</div>
+        <h2 data-latest-title>从下一次真实信号开始</h2>
+        <p data-latest-description>这里不会回填历史结果冒充事前预测。首条新信号发布后，本卡片会显示承诺时间与揭示状态。</p>
+        <dl class="latest-meta">
+          <div><dt>观察日期</dt><dd data-as-of-date>—</dd></div>
+          <div><dt>预测周期</dt><dd>下一交易时段</dd></div>
+          <div><dt>密码学证明</dt><dd data-proof-status>等待生成</dd></div>
+        </dl>
+      </article>
+    </section>
+
+    <section class="state-band" aria-labelledby="states-title">
+      <div class="shell">
+        <div class="section-intro compact">
+          <p class="eyebrow">FIVE MARKET STATES</p>
+          <h2 id="states-title">只记录市场状态，<br>不替任何人决定仓位。</h2>
+        </div>
+        <ol class="state-scale">
+          <li data-level="-2"><span>-2</span><strong>强空</strong><small>显著防御</small></li>
+          <li data-level="-1"><span>-1</span><strong>弱空</strong><small>偏向防守</small></li>
+          <li data-level="0"><span>0</span><strong>看平</strong><small>中性观察</small></li>
+          <li data-level="1"><span>+1</span><strong>弱多</strong><small>温和积极</small></li>
+          <li data-level="2"><span>+2</span><strong>强多</strong><small>明显积极</small></li>
+        </ol>
+        <p class="boundary-copy">风险暴露是第二层映射。同一个状态下，不同风险偏好应使用不同仓位；公开账本不提供个性化买卖指令。</p>
+      </div>
+    </section>
+
+    <section id="history" class="history shell" aria-labelledby="history-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PUBLIC RECORDS</p>
+          <h2 id="history-title">成功、失败和空缺，<br>采用同一套规则。</h2>
+        </div>
+        <p>未揭示记录只显示事前承诺；到期后才显示市场状态。任何缺失或修订都会留在公开记录中。</p>
+      </div>
+      <div class="history-summary" aria-label="账本摘要">
+        <div><strong data-record-count>0</strong><span>公开承诺</span></div>
+        <div><strong data-revealed-count>0</strong><span>已揭示</span></div>
+        <div><strong data-verified-count>0</strong><span>验证通过</span></div>
+      </div>
+      <div id="history-list" class="history-list" aria-live="polite">
+        <div class="empty-record">
+          <span>NO RECORDS YET</span>
+          <p>公开基础设施已经就绪，等待下一次真实生成的时序信号。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="method-section">
+      <div class="shell">
+        <div class="section-intro">
+          <p class="eyebrow">HOW VERIFICATION WORKS</p>
+          <h2>哈希负责锁定内容，<br>外部时间证明负责锁定时间。</h2>
+          <p>仅有 Git 历史不够。每个承诺文件还会由独立透明日志记录存在时间，避免通过改写仓库历史伪造更早的发布日期。</p>
+        </div>
+        <ol class="method-grid">
+          <li><span>01</span><h3>生成</h3><p>20:00 左右从只读数据库连接读取最新 `trend5mcx` 五档信号，并检查日期与字段一致性。</p></li>
+          <li><span>02</span><h3>承诺</h3><p>状态与 256 位随机 nonce 经过 RFC 8785 标准化，再计算 SHA-256；公开文件不包含状态。</p></li>
+          <li><span>03</span><h3>见证</h3><p>公开文件由 Sigstore / Rekor 透明日志见证。GitHub 仓库只是原始证据入口，不是阅读门槛。</p></li>
+          <li><span>04</span><h3>揭示</h3><p>五个后续交易观测日后公开状态与 nonce，任何人都可以重新计算并核对原承诺。</p></li>
+        </ol>
+
+        <div id="verification-panel" class="verification-panel">
+          <div>
+            <p class="eyebrow">INDEPENDENT VERIFICATION</p>
+            <h3>验证在你的浏览器里完成。</h3>
+            <p>本站不会要求你相信服务器给出的“验证成功”。揭示后，页面会在本地重新标准化原文、计算 SHA-256，并与事前承诺逐字节比较。</p>
+          </div>
+          <div class="proof-example" aria-label="验证流程示例">
+            <code>RFC8785(reveal)</code>
+            <span>↓ UTF-8</span>
+            <code>SHA-256</code>
+            <span>↓ compare</span>
+            <strong data-verifier-demo>等待可验证记录</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer shell">
+    <div><strong>苏牙择时公开账本</strong><p>个人自营研究的前瞻记录，不构成投资建议，也不代表或保证未来表现。</p></div>
+    <div class="footer-links">
+      <a href="https://weilisong.com/">个人主页</a>
+      <a href="https://github.com/sowelswl/suya-market-regime-ledger/attestations">原始时间证明</a>
+      <a href="https://github.com/sowelswl/suya-market-regime-ledger">技术源文件</a>
+    </div>
+  </footer>
+
+  <script type="module" src="./assets/ledger.js"></script>
+</body>
+</html>

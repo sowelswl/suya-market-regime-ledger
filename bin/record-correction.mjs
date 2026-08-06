@@ -9,7 +9,7 @@ async function main() {
   const options = parseArgs(process.argv.slice(2))
   const root = path.resolve(typeof options.root === "string" ? options.root : process.cwd())
   const result = await appendCorrection(root, {
-    signal_date: requireOption(options, "signal-date"),
+    as_of_trade_date: requireOption(options, "as-of-trade-date"),
     recorded_at: requireOption(options, "recorded-at"),
     original_commitment: requireOption(options, "original-commitment"),
     reason: requireOption(options, "reason"),
