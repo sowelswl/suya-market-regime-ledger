@@ -6,6 +6,8 @@ on:
     paths:
       - "commitments/**/*.json"
       - "reveals/**/*.json"
+      - "evaluation/v1.json"
+      - "EVALUATION_V1.md"
 
 permissions:
   contents: read
@@ -23,3 +25,5 @@ jobs:
           subject-path: |
             commitments/**/*.json
             reveals/**/*.json
+            evaluation/v1.json
+            EVALUATION_V1.md

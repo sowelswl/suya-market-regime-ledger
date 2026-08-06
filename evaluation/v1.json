@@ -1,0 +1,92 @@
+{
+  "policy_id": "suya-market-regime-evaluation",
+  "version": "1.0.0",
+  "status": "frozen",
+  "effective_from": "2026-08-07",
+  "target": {
+    "index_name": "中证500指数",
+    "index_code": "000905",
+    "publisher": "China Securities Index Co., Ltd.",
+    "price_field": "official_close",
+    "return_type": "price_return",
+    "trading_calendar": "official_index_observation_dates"
+  },
+  "states": [
+    { "level": -2, "label": "强空" },
+    { "level": -1, "label": "弱空" },
+    { "level": 0, "label": "看平" },
+    { "level": 1, "label": "弱多" },
+    { "level": 2, "label": "强多" }
+  ],
+  "daily": {
+    "unit": "every_valid_revealed_commitment",
+    "origin": "official_close_on_as_of_trade_date",
+    "horizons_in_trading_days": [1, 2, 3],
+    "primary_horizon_in_trading_days": 1,
+    "return_formula": "close[t+h] / close[t] - 1",
+    "direction_hit": {
+      "positive_levels": "realized_return > 0",
+      "negative_levels": "realized_return < 0",
+      "zero_return_for_nonzero_level": "miss"
+    },
+    "neutral_band": {
+      "formula": "0.5 * sample_std(last_20_daily_returns_ending_at_t) * sqrt(h)",
+      "lookback_returns": 20,
+      "volatility_multiplier": 0.5,
+      "hit_rule": "abs(realized_return) <= neutral_band",
+      "insufficient_history": "not_scored"
+    },
+    "strength_evaluation": {
+      "classification_accuracy": false,
+      "method": "conditional_return_distributions_and_level_return_rank_correlation",
+      "comparisons": [
+        "strong_long_vs_weak_long",
+        "strong_short_vs_weak_short",
+        "monotonicity_across_all_five_levels"
+      ]
+    }
+  },
+  "intervals": {
+    "grouping": "consecutive_equal_signal_level",
+    "entry": "official_close_on_first_as_of_trade_date",
+    "exit": "official_close_on_the_trading_day_after_last_equal_state_as_of_date",
+    "open_interval_policy": "exclude_until_closed",
+    "gap_policy": "terminate_interval",
+    "metrics": [
+      "trading_day_duration",
+      "interval_return",
+      "direction_hit",
+      "maximum_favorable_excursion_from_closes",
+      "maximum_adverse_excursion_from_closes"
+    ]
+  },
+  "corrections": {
+    "original_record_policy": "never_replace",
+    "invalidated_record_predictive_metrics": "exclude",
+    "invalidated_record_operational_metrics": "include",
+    "missing_record_policy": "report_and_never_impute"
+  },
+  "reporting": {
+    "minimum_revealed_records_for_preliminary_summary": 20,
+    "minimum_records_per_state_for_state_metric": 10,
+    "minimum_completed_intervals_for_interval_summary": 10,
+    "before_threshold": "counts_and_operational_completeness_only",
+    "primary_metrics": [
+      "publication_completeness",
+      "reveal_completeness",
+      "one_day_direction_or_neutral_hit_rate",
+      "conditional_mean_and_median_returns",
+      "completed_interval_returns"
+    ],
+    "not_primary": [
+      "personalized_position_portfolio_return",
+      "single_backtested_optimal_exposure",
+      "cherry_picked_cases"
+    ]
+  },
+  "versioning": {
+    "mutation": "forbidden",
+    "change_process": "publish_a_new_version_with_a_future_effective_date",
+    "historical_restating": "forbidden"
+  }
+}

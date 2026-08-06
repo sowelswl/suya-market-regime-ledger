@@ -11,6 +11,9 @@
 - 配置文件不包含密码，也不写入任何密码或 token；
 - Publisher 只暂存 `commitments`、`reveals` 和由公开数据构建的 `docs`，不会提交其他工作区改动；
 - 数据库当天没有新鲜记录时失败关闭，不沿用旧信号。
+- 数据库没有更新或 Publisher 未运行时，20:05 发布器会失败，20:20/20:40 巡检也会因当天承诺缺失而通知；
+- GitHub 推送失败会在发布阶段立即通知，巡检还会通过远端承诺缺失再次发现；
+- 未捕获的同步、存证或公开 JSON 错误统一写入本地错误日志并弹出 macOS 通知，不在通知中包含凭据。
 
 运行副本建议放在 `$HOME/.local/share/suya-market-regime-ledger/repo`，日志放在 `$HOME/.local/state/suya-market-regime-ledger`。发布 LaunchAgent 调用 `ops/publish-daily.sh`，巡检 LaunchAgent 调用 `ops/verify-daily-publication.sh`；两者都通过环境变量 `SUYA_LEDGER_REPO` 指向该副本。
 

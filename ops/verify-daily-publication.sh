@@ -9,24 +9,31 @@ year="${as_of_date%%-*}"
 month_and_day="${as_of_date#*-}"
 month="${month_and_day%%-*}"
 commitment_path="commitments/${year}/${month}/${as_of_date}.json"
+source "$ledger_repo/ops/notify.sh"
+# Notifications use /usr/bin/osascript through ops/notify.sh.
 
-notify() {
-  /usr/bin/osascript \
-    -e 'on run argv' \
-    -e 'display notification (item 1 of argv) with title "苏牙择时账本"' \
-    -e 'end run' \
-    "$1" >/dev/null 2>&1 || true
+failure_stage="启动"
+handle_failure() {
+  local exit_code="$1"
+  trap - ERR
+  echo "Watchdog failed during $failure_stage" >&2
+  notify_ledger "巡检异常（${failure_stage}），请查看 watchdog.error.log"
+  exit "$exit_code"
 }
+trap 'handle_failure $?' ERR
 
+failure_stage="同步运行副本"
 cd "$ledger_repo"
 if [[ "$(git branch --show-current)" != "main" ]]; then
   echo "Watchdog clone must remain on main" >&2
-  notify "巡检失败：运行副本不在 main 分支"
+  notify_ledger "巡检失败：运行副本不在 main 分支"
+  trap - ERR
   exit 1
 fi
 if [[ -n "$(git status --porcelain)" ]]; then
   echo "Watchdog clone has uncommitted changes" >&2
-  notify "巡检失败：运行副本存在未提交改动"
+  notify_ledger "巡检失败：运行副本存在未提交改动"
+  trap - ERR
   exit 1
 fi
 
@@ -34,17 +41,20 @@ git pull --ff-only
 
 if [[ ! -f "$commitment_path" ]]; then
   echo "Missing local commitment for $as_of_date" >&2
-  notify "巡检失败：今天的承诺文件不存在"
+  notify_ledger "巡检失败：20:05 定时发布未完成，或数据库未产生今天的新鲜信号"
+  trap - ERR
   exit 1
 fi
 
 if ! gh api "repos/$repo_slug/contents/$commitment_path?ref=main" --silent; then
   echo "Missing remote commitment for $as_of_date" >&2
-  notify "巡检失败：今天的承诺尚未到达 GitHub"
+  notify_ledger "巡检失败：今天的承诺尚未完成 GitHub 推送"
+  trap - ERR
   exit 1
 fi
 
 evidence_sha="$(git log -1 --format=%H -- "$commitment_path")"
+failure_stage="外部存证检查"
 attestation_line="$(gh run list \
   --repo "$repo_slug" \
   --workflow "Attest public ledger evidence" \
@@ -55,13 +65,13 @@ attestation_line="$(gh run list \
 
 if [[ -z "$attestation_line" ]]; then
   echo "No attestation run found for $evidence_sha" >&2
-  notify "巡检提醒：今天的外部存证尚未生成"
+  notify_ledger "巡检提醒：今天的外部存证尚未生成"
 else
   IFS='|' read -r attestation_id attestation_status attestation_conclusion <<< "$attestation_line"
   if [[ "$attestation_status" == "completed" && "$attestation_conclusion" != "success" ]]; then
     gh run rerun "$attestation_id" --repo "$repo_slug"
     echo "Re-ran failed attestation workflow $attestation_id"
-    notify "外部存证失败，已自动申请重试"
+    notify_ledger "外部存证失败，已自动申请重试"
   elif [[ "$attestation_status" != "completed" ]]; then
     echo "Attestation workflow is still $attestation_status"
   fi
@@ -69,6 +79,7 @@ fi
 
 temporary_dir="$(mktemp -d)"
 trap 'rm -rf "$temporary_dir"' EXIT
+failure_stage="公开 JSON 检查"
 cache_buster="$(date +%s)"
 if curl -fsS --retry 2 --connect-timeout 10 \
   -H "Cache-Control: no-cache" \
@@ -81,9 +92,11 @@ if curl -fsS --retry 2 --connect-timeout 10 \
     process.exit(data.records?.some((record) => record.commitment?.as_of_trade_date === date) ? 0 : 1)
   ' "$temporary_dir/index.json" "$as_of_date"; then
   echo "Public page includes the $as_of_date commitment"
+  trap - ERR
   exit 0
 fi
 
 echo "Raw public snapshot does not include $as_of_date" >&2
-notify "巡检失败：公开 JSON 尚未包含今天的承诺"
+notify_ledger "巡检失败：公开 JSON 尚未包含今天的承诺"
+trap - ERR
 exit 1
