@@ -68,6 +68,7 @@ test("the database entry point uses only the configured normal credential family
   }
   assert.doesNotMatch(source, /ADMIN|DDL/)
   assert.match(source, /LEDGER_PRIVATE_ROOT/)
+  assert.match(source, /database:\s*"signal_db"/)
 })
 
 test("pending records reveal only after five later table observations", async () => {
@@ -100,7 +101,12 @@ test("pending records reveal only after five later table observations", async ()
 
   assert.deepEqual(published, ["2026-08-05"])
   assert.equal(revealClient.queries[0].sql, "BEGIN READ ONLY")
-  assert.deepEqual(revealClient.queries[1].values, ["2026-08-05"])
+  assert.deepEqual(revealClient.queries[1].values, [
+    "2026-08-05",
+    "ret_trend_lev_ma_5level_calendar",
+    "98bc3197708958de",
+    "IC.CFE",
+  ])
   assert.equal(revealClient.queries.at(-1).sql, "ROLLBACK")
   assert.equal(
     JSON.parse(await readFile(path.join(publicRoot, "reveals/2026/08/2026-08-05.json"), "utf8")).signal_label,

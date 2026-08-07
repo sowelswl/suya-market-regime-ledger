@@ -69,3 +69,23 @@ test("the browser verifier independently accepts a valid reveal and rejects tamp
   assert.equal(await verifyInBrowser(entry.commitment, entry.reveal), true)
   assert.equal(await verifyInBrowser(entry.commitment, { ...entry.reveal, signal_label: "强多" }), false)
 })
+
+test("the browser verifier accepts both frozen source identities during migration", async () => {
+  const oldSource = "aistk.public.micro_timing_final_tail_hold_dates:trend5mcx"
+  const legacy = createLedgerEntry({ ...{
+    sequence: 1,
+    previousCommitment: null,
+    asOfTradeDate: "2026-08-05",
+    committedAt: "2026-08-05T20:00:00+08:00",
+    sourceGeneratedAt: "2026-08-05T19:31:14+08:00",
+    signalLevel: 1,
+    signalLabel: "弱多",
+    nonce: "e".repeat(64),
+  }, source: oldSource })
+
+  assert.equal(await verifyInBrowser(legacy.commitment, legacy.reveal), true)
+  assert.equal(await verifyInBrowser(
+    { ...legacy.commitment, source: "unknown.source" },
+    { ...legacy.reveal, source: "unknown.source" },
+  ), false)
+})

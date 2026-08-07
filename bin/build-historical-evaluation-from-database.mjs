@@ -15,26 +15,37 @@ function requiredEnv(name) {
 
 async function main() {
   const output = path.resolve(process.cwd(), "evaluation/public/history.json")
-  const client = new pg.Client({
+  const common = {
     host: requiredEnv("PG_NAS_HOST"),
     port: Number(requiredEnv("PG_NAS_PORT")),
     user: requiredEnv("PG_NAS_USER"),
     password: requiredEnv("PG_NAS_PASSWORD"),
-    database: "aistk",
-    application_name: "suya_historical_evaluation_reader",
     connectionTimeoutMillis: 10_000,
     statement_timeout: 30_000,
+  }
+  const signalClient = new pg.Client({
+    ...common,
+    database: "signal_db",
+    application_name: "suya_historical_signal_reader",
+  })
+  const marketClient = new pg.Client({
+    ...common,
+    database: "aistk",
+    application_name: "suya_historical_market_reader",
   })
 
   try {
-    await client.connect()
-    const rows = await fetchHistoricalEvaluationRows(client)
+    await Promise.all([signalClient.connect(), marketClient.connect()])
+    const rows = await fetchHistoricalEvaluationRows(signalClient, marketClient)
     const report = buildHistoricalEvaluation(rows)
     await mkdir(path.dirname(output), { recursive: true })
     await writeFile(output, `${JSON.stringify(report, null, 2)}\n`, "utf8")
     console.log(`Built aggregate evaluation for ${report.scope.observations} observations`)
   } finally {
-    await client.end().catch(() => {})
+    await Promise.all([
+      signalClient.end().catch(() => {}),
+      marketClient.end().catch(() => {}),
+    ])
   }
 }
 

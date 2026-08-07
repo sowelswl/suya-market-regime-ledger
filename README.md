@@ -2,7 +2,7 @@
 
 [公开前端](https://weilisong.com/suya-market-regime-ledger/)面向普通读者展示五档市场状态、承诺状态和验证结果；使用前端不需要 GitHub 账号。这个仓库保留原始证据、独立验证工具和发布代码。
 
-账本建立一条可以独立验证的事前（prospective）记录：每天约 20:00 从 PostgreSQL 表 `aistk.public.micro_timing_final_tail_hold_dates` 读取最新 `trend5mcx` 时序信号，先公开隐藏状态的密码学承诺；五个交易日（以五个后续交易观测日计）后再揭示原始状态与随机 nonce。
+账本建立一条可以独立验证的事前（prospective）记录：每天约 20:00 从 `signal_db.public.jq_time_series_signal_daily` 读取策略 `ret_trend_lev_ma_5level_calendar` 版本 `3.2` 的最新五档 `prediction`（参数哈希 `98bc3197708958de`，标的 `IC.CFE`），先公开隐藏状态的密码学承诺；五个交易日（以五个后续交易观测日计）后再揭示原始状态与随机 nonce。
 
 它证明的是“某个公开时间点已经形成了什么市场状态”，不是对模型能力或未来收益的保证。
 
@@ -47,6 +47,8 @@ SHA-256 能锁定内容，Sigstore / Rekor 用来提供仓库身份和外部时�
 ## 数据库自动生成
 
 数据库凭据只通过进程环境提供，代码使用 `PG_NAS_HOST`、`PG_NAS_PORT`、`PG_NAS_USER` 和 `PG_NAS_PASSWORD`，不会读取 admin 或 DDL 凭据。查询始终包在 `BEGIN READ ONLY` 事务中。
+
+实时 commitment 和到期揭示日历从 `signal_db` 读取。历史评价同样从该表读取五档 prediction，再按交易日连接 `aistk` 中的中证500和沪深300收益；两个连接分别使用只读事务。2026-08-07 之前已生成的 commitment 保留原来源标识并继续按原哈希验证，不会被改写成新来源。
 
 ```bash
 export LEDGER_PRIVATE_ROOT="$HOME/.secrets/suya-market-regime-ledger"
