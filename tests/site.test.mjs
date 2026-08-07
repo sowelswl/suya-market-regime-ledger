@@ -39,6 +39,11 @@ test("the public site explains the ledger without requiring GitHub knowledge", a
   assert.match(script, /invalidatedDates/)
   assert.match(script, /已作废/)
   assert.match(script, /corrections/)
+  assert.match(script, /下一交易日实绩/)
+  assert.match(script, /中证500[\s\S]*沪深300[\s\S]*中证1000[\s\S]*中证2000[\s\S]*上证指数/)
+  assert.match(script, /方向一致/)
+  assert.match(css, /\.record-outcomes/)
+  assert.match(css, /\.outcome-grid/)
 })
 
 test("the public docs snapshot and Sigstore publish the evidence", async () => {
@@ -58,6 +63,7 @@ test("the public docs snapshot and Sigstore publish the evidence", async () => {
   assert.match(attest, /id-token:\s*write/)
   assert.match(attest, /attestations:\s*write/)
   assert.match(attest, /commitments\/\*\*\/\*\.json/)
+  assert.match(attest, /evaluation\/public\/revealed-outcomes\.json/)
   const data = JSON.parse(publishedData)
   assert.deepEqual(Object.keys(data.historical_evaluation.benchmarks), [
     "csi500",

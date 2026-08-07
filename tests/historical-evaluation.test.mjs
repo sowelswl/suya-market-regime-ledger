@@ -15,6 +15,7 @@ const states = [
 function sampleRows() {
   return states.flatMap((state, stateIndex) => Array.from({ length: 10 }, (_, index) => ({
     as_of_trade_date: `2025-${String(stateIndex + 1).padStart(2, "0")}-${String(index + 1).padStart(2, "0")}`,
+    outcome_trade_date: `2025-${String(stateIndex + 1).padStart(2, "0")}-${String(index + 2).padStart(2, "0")}`,
     signal_level: state.level,
     signal_label: state.label,
     next_csi500_return: state.nextReturn,
@@ -70,6 +71,7 @@ test("historical source joins separately read-only signal and market-return sour
       if (/jq_time_series_signal_daily/i.test(sql)) {
         return { rows: sampleRows().map((row) => ({
           as_of_trade_date: row.as_of_trade_date,
+          outcome_trade_date: row.outcome_trade_date,
           source_generated_at: row.source_generated_at,
           signal_level: row.signal_level,
           signal_label: row.signal_label,
@@ -120,6 +122,7 @@ test("historical source joins separately read-only signal and market-return sour
   assert.equal(marketQueries[0], "BEGIN READ ONLY")
   assert.match(marketQueries[1], /LEAD\(csi500_return\)/i)
   assert.match(marketQueries[1], /LEAD\(hs300_return\)/i)
+  assert.match(marketQueries[1], /LEAD\(trade_date::text\)/i)
   assert.equal(marketQueries.at(-1), "ROLLBACK")
   assert.equal(indexQueries[0].sql, "BEGIN READ ONLY")
   assert.match(indexQueries[1].sql, /cn_stock_index_price_daily_wind/i)

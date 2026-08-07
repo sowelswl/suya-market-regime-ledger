@@ -4,7 +4,8 @@
   "source_repository": "https://github.com/sowelswl/suya-market-regime-ledger",
   "privacy": {
     "public_signal_window": 20,
-    "raw_historical_signals_published": false
+    "raw_historical_signals_published": false,
+    "market_outcomes_after_the_fact": true
   },
   "historical_evaluation": {
     "schema_version": "1.0",
@@ -588,6 +589,7 @@
         "commitment": "sha256:dd79ca3eded54a2dc8b9898583ed99362fb1db0a0b31b02a4cc9a6fa2ee6b0b7"
       },
       "reveal": null,
+      "outcome": null,
       "corrections": []
     },
     {
@@ -606,6 +608,7 @@
         "commitment": "sha256:b00b380d4606dd0a5468097738c2306e86aa5d005d2c1d96e134137e2b842e33"
       },
       "reveal": null,
+      "outcome": null,
       "corrections": [
         {
           "as_of_trade_date": "2026-08-06",
