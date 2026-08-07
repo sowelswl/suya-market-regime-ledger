@@ -11,6 +11,7 @@ on:
       - "evaluation/v1.1.json"
       - "evaluation/v1.2.json"
       - "evaluation/public/history.json"
+      - "evaluation/public/revealed-outcomes.json"
       - "publication/v1.json"
       - "EVALUATION_V1.md"
       - "EVALUATION_V1_1.md"
@@ -40,6 +41,7 @@ jobs:
             evaluation/v1.1.json
             evaluation/v1.2.json
             evaluation/public/history.json
+            evaluation/public/revealed-outcomes.json
             publication/v1.json
             EVALUATION_V1.md
             EVALUATION_V1_1.md

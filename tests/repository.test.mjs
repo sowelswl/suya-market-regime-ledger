@@ -28,6 +28,8 @@ test("repository documents the prospective proof boundary and five-state method"
   assert.match(readme, /reveal-signal\.mjs/)
   assert.match(readme, /verify-signal\.mjs/)
   assert.match(readme, /不公开[^\n]*(?:模型代码|实时信号)/)
+  assert.match(readme, /揭示[^\n]*下一交易日[^\n]*(?:涨跌幅|收益)/)
+  assert.match(readme, /事后市场结果[^\n]*承诺|不属于[^\n]*事前承诺/)
   assert.match(methodology, /风险暴露/)
   assert.match(methodology, /不是[^\n]*仓位指令/)
   assert.match(methodology, /as_of_trade_date/)

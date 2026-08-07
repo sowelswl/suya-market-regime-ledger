@@ -96,7 +96,7 @@
           <p class="eyebrow">PUBLIC RECORDS</p>
           <h2 id="history-title">最近 20 个交易日，<br>采用同一套规则。</h2>
         </div>
-        <p>未揭示记录只显示事前承诺；到期后才显示市场状态。页面和仓库当前视图只保留最近 20 个交易日的信号窗口，更早结果只进入聚合评价。</p>
+        <p>未揭示记录只显示事前承诺；到期后才显示市场状态，以及它所预测的下一交易日五个宽基实际涨跌幅。页面和仓库当前视图只保留最近 20 个交易日的信号窗口，更早结果只进入聚合评价。</p>
       </div>
       <div class="history-summary" aria-label="账本摘要">
         <div><strong data-record-count>0</strong><span>窗口内承诺</span></div>
@@ -122,7 +122,7 @@
           <li><span>01</span><h3>生成</h3><p>20:00 左右从只读数据库连接读取策略 3.2 的最新五档 prediction，并检查日期与策略标识一致性。</p></li>
           <li><span>02</span><h3>承诺</h3><p>状态与 256 位随机 nonce 经过 RFC 8785 标准化，再计算 SHA-256；公开文件不包含状态。</p></li>
           <li><span>03</span><h3>见证</h3><p>公开文件由 Sigstore / Rekor 透明日志见证。GitHub 仓库只是原始证据入口，不是阅读门槛。</p></li>
-          <li><span>04</span><h3>揭示</h3><p>五个后续交易观测日后公开状态与 nonce，任何人都可以重新计算并核对原承诺。</p></li>
+          <li><span>04</span><h3>揭示</h3><p>五个后续交易观测日后公开状态与 nonce，并附上被预测的下一交易日五个宽基实际涨跌；事前证明与事后结果分开核对。</p></li>
         </ol>
 
         <div id="verification-panel" class="verification-panel">

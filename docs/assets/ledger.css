@@ -150,6 +150,21 @@ h1 { margin: 0; font-size: clamp(58px, 7.5vw, 102px); line-height: .98; }
 .record-status { justify-self: end; padding: 7px 12px; border-radius: 999px; background: var(--paper-deep); font-size: 12px; font-weight: 700; }
 .record-status.verified { color: #0e5a3f; background: #d7eee3; }
 .record-status.invalidated { color: #8a3030; background: #f2d8d5; }
+.history-record.has-outcome { margin: 18px 0; padding: 24px; background: var(--white); border: 1px solid var(--line); border-radius: 20px; }
+.record-outcomes { grid-column: 1 / -1; min-width: 0; padding-top: 20px; border-top: 1px solid var(--line); }
+.outcome-header { display: flex; justify-content: space-between; gap: 24px; align-items: baseline; margin-bottom: 15px; }
+.outcome-header strong { font: 24px var(--serif); }
+.outcome-header span { color: var(--muted); font-size: 12px; }
+.outcome-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; overflow-x: auto; }
+.outcome-tile { min-width: 0; padding: 17px; background: var(--paper); border-radius: 14px; }
+.outcome-tile > span, .outcome-tile > strong, .outcome-tile > small { display: block; }
+.outcome-tile > span { color: var(--muted); font-size: 11px; }
+.outcome-tile > strong { margin: 8px 0 11px; font: 28px var(--serif); font-variant-numeric: tabular-nums; }
+.outcome-tile.positive > strong { color: #b3423a; }
+.outcome-tile.negative > strong { color: #187153; }
+.outcome-tile > small { width: fit-content; padding: 4px 7px; border-radius: 999px; font-size: 10px; font-weight: 700; }
+.direction-hit { color: #0e5a3f; background: #d7eee3; }
+.direction-miss { color: #8a3030; background: #f2d8d5; }
 
 .method-section { padding: 128px 0; color: var(--white); background: var(--forest-soft); }
 .method-section .eyebrow { color: #8ed0b5; }
@@ -199,6 +214,11 @@ h1 { margin: 0; font-size: clamp(58px, 7.5vw, 102px); line-height: .98; }
   .history-summary div { display: flex; justify-content: space-between; align-items: center; }
   .history-record { grid-template-columns: 1fr 1fr; gap: 10px; }
   .record-state, .record-status { grid-column: 1 / -1; }
+  .history-record.has-outcome { padding: 20px; }
+  .outcome-header { align-items: flex-start; flex-direction: column; gap: 3px; }
+  .outcome-grid { grid-template-columns: repeat(5, minmax(118px, 1fr)); }
+  .outcome-tile { padding: 14px; }
+  .outcome-tile > strong { font-size: 24px; }
   .method-grid { grid-template-columns: 1fr; }
   .method-grid li, .method-grid li + li { min-height: 0; padding: 26px 0; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.15); }
   .method-grid h3 { margin-top: 26px; }

@@ -55,10 +55,12 @@ failure_stage="历史聚合评价"
 node bin/build-historical-evaluation-from-database.mjs
 failure_stage="公开信号窗口更新"
 node bin/prune-public-reveals.mjs
+failure_stage="已揭示记录的次日市场结果"
+node bin/build-revealed-outcomes-from-database.mjs
 failure_stage="公开快照生成"
 npm run build:pages
 
-git add commitments reveals evaluation/public/history.json docs
+git add commitments reveals evaluation/public/history.json evaluation/public/revealed-outcomes.json docs
 if git diff --cached --quiet; then
   echo "No public ledger evidence to publish"
   exit 0

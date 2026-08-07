@@ -22,9 +22,23 @@ test("site data joins public commitments and reveals without private material", 
 
   await mkdir(path.join(root, "commitments/2026/08"), { recursive: true })
   await mkdir(path.join(root, "reveals/2026/08"), { recursive: true })
+  await mkdir(path.join(root, "evaluation/public"), { recursive: true })
   await mkdir(path.join(root, "corrections"), { recursive: true })
   await writeFile(path.join(root, "commitments/2026/08/2026-08-05.json"), JSON.stringify(entry.commitment))
   await writeFile(path.join(root, "reveals/2026/08/2026-08-05.json"), JSON.stringify(entry.reveal))
+  await writeFile(path.join(root, "evaluation/public/revealed-outcomes.json"), JSON.stringify({
+    records: [{
+      as_of_trade_date: "2026-08-05",
+      outcome_trade_date: "2026-08-06",
+      benchmarks: {
+        csi500: { label: "中证500", return: -0.01 },
+        hs300: { label: "沪深300", return: -0.008 },
+        csi1000: { label: "中证1000", return: -0.012 },
+        csi2000: { label: "中证2000", return: -0.013 },
+        sse_composite: { label: "上证指数", return: -0.006 },
+      },
+    }],
+  }))
   await writeFile(path.join(root, "corrections/corrections.jsonl"), `${JSON.stringify({
     as_of_trade_date: "2026-08-05",
     recorded_at: "2026-08-07T09:00:00+08:00",
@@ -37,11 +51,14 @@ test("site data joins public commitments and reveals without private material", 
   assert.equal(data.records.length, 1)
   assert.equal(data.records[0].commitment.as_of_trade_date, "2026-08-05")
   assert.equal(data.records[0].reveal.signal_label, "强空")
+  assert.equal(data.records[0].outcome.outcome_trade_date, "2026-08-06")
+  assert.equal(data.records[0].outcome.benchmarks.csi1000.return, -0.012)
   assert.equal(data.records[0].corrections.length, 1)
   assert.equal(data.records[0].corrections[0].action, "invalidate")
   assert.match(data.records[0].corrections[0].reason, /日期错位/)
   assert.equal(data.generated_at, entry.commitment.committed_at)
   assert.equal("private" in data, false)
+  assert.equal("signal_level" in data.records[0].outcome, false)
 })
 
 test("site data exposes only the latest 20 records and includes aggregate historical evaluation", async () => {

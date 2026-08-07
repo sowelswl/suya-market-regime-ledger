@@ -3,6 +3,14 @@ const KNOWN_SOURCE_NAMES = new Set([
   "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
 ])
 
+const OUTCOME_ORDER = [
+  ["csi500", "中证500"],
+  ["hs300", "沪深300"],
+  ["csi1000", "中证1000"],
+  ["csi2000", "中证2000"],
+  ["sse_composite", "上证指数"],
+]
+
 export function canonicalize(value) {
   if (value === null) return "null"
   if (typeof value === "string" || typeof value === "boolean") return JSON.stringify(value)
@@ -68,6 +76,16 @@ function formatDate(value) {
 
 function formatPercent(value, digits = 1) {
   return Number.isFinite(value) ? `${(value * 100).toFixed(digits)}%` : "—"
+}
+
+function formatSignedPercent(value) {
+  if (!Number.isFinite(value)) return "—"
+  const sign = value > 0 ? "+" : ""
+  return `${sign}${(value * 100).toFixed(2)}%`
+}
+
+function directionMatches(signalLevel, marketReturn) {
+  return signalLevel >= 0 ? marketReturn > 0 : marketReturn < 0
 }
 
 function invalidationFor(record) {
@@ -217,6 +235,43 @@ function renderHistory(records, verifiedDates, invalidatedDates) {
       : "等待揭示"
 
     row.append(sequence, date, state, status)
+    if (!invalidated && verifiedDates.has(record.commitment.as_of_trade_date) && record.outcome?.benchmarks) {
+      row.classList.add("has-outcome")
+      const outcome = document.createElement("section")
+      outcome.className = "record-outcomes"
+      outcome.setAttribute("aria-label", `${record.reveal.signal_label}信号的下一交易日市场结果`)
+
+      const outcomeHeader = document.createElement("div")
+      outcomeHeader.className = "outcome-header"
+      const outcomeTitle = document.createElement("strong")
+      outcomeTitle.textContent = "下一交易日实绩"
+      const outcomeSummary = document.createElement("span")
+      const values = OUTCOME_ORDER.map(([key]) => Number(record.outcome.benchmarks[key]?.return))
+      const hitCount = values.filter((value) => directionMatches(record.reveal.signal_level, value)).length
+      outcomeSummary.textContent = `${formatDate(record.outcome.outcome_trade_date)} · ${hitCount}/5 方向一致`
+      outcomeHeader.append(outcomeTitle, outcomeSummary)
+
+      const outcomeGrid = document.createElement("div")
+      outcomeGrid.className = "outcome-grid"
+      for (const [key, fallbackLabel] of OUTCOME_ORDER) {
+        const benchmark = record.outcome.benchmarks[key]
+        const value = Number(benchmark?.return)
+        const matches = directionMatches(record.reveal.signal_level, value)
+        const tile = document.createElement("div")
+        tile.className = `outcome-tile ${value >= 0 ? "positive" : "negative"}`
+        const label = document.createElement("span")
+        label.textContent = benchmark?.label ?? fallbackLabel
+        const result = document.createElement("strong")
+        result.textContent = formatSignedPercent(value)
+        const comparison = document.createElement("small")
+        comparison.className = matches ? "direction-hit" : "direction-miss"
+        comparison.textContent = matches ? "方向一致" : "方向相反"
+        tile.append(label, result, comparison)
+        outcomeGrid.append(tile)
+      }
+      outcome.append(outcomeHeader, outcomeGrid)
+      row.append(outcome)
+    }
     list.append(row)
   }
 }
