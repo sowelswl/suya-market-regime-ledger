@@ -16,6 +16,7 @@
       <span><strong>苏牙择时</strong><small>公开账本</small></span>
     </a>
     <nav aria-label="页面导航">
+      <a href="#evaluation">历史评价</a>
       <a href="#history">历史记录</a>
       <a href="#method">验证方法</a>
       <a href="https://weilisong.com/">关于宋伟力</a>
@@ -68,18 +69,39 @@
       </div>
     </section>
 
+    <section id="evaluation" class="evaluation-section" aria-labelledby="evaluation-title">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">RETROSPECTIVE EVALUATION</p>
+            <h2 id="evaluation-title">全部历史用来评价，<br>不用来交出信号。</h2>
+          </div>
+          <p>按 v1.1 固定口径，每条信号只评价下一交易日方向。这里只公开聚合结果与数据快照哈希，不公开逐日历史信号序列。</p>
+        </div>
+        <div class="evaluation-summary" aria-live="polite">
+          <div><strong data-evaluation-observations>—</strong><span>可评价信号</span></div>
+          <div><strong data-evaluation-range>—</strong><span>历史样本区间</span></div>
+          <div><strong data-evaluation-policy>v1.1</strong><span>下一交易日口径</span></div>
+        </div>
+        <div id="evaluation-benchmarks" class="evaluation-benchmarks">
+          <div class="evaluation-empty">正在读取历史聚合评价……</div>
+        </div>
+        <p class="evaluation-boundary">回溯评价不具备上线前的事前承诺证明，不与公开账本的事前样本混算。个别状态少于 10 条、单年少于 20 条时不展示详细指标。</p>
+      </div>
+    </section>
+
     <section id="history" class="history shell" aria-labelledby="history-title">
       <div class="section-heading">
         <div>
           <p class="eyebrow">PUBLIC RECORDS</p>
-          <h2 id="history-title">成功、失败和空缺，<br>采用同一套规则。</h2>
+          <h2 id="history-title">最近 20 个交易日，<br>采用同一套规则。</h2>
         </div>
-        <p>未揭示记录只显示事前承诺；到期后才显示市场状态。任何缺失或修订都会留在公开记录中。</p>
+        <p>未揭示记录只显示事前承诺；到期后才显示市场状态。页面和仓库当前视图只保留最近 20 个交易日的信号窗口，更早结果只进入聚合评价。</p>
       </div>
       <div class="history-summary" aria-label="账本摘要">
-        <div><strong data-record-count>0</strong><span>公开承诺</span></div>
-        <div><strong data-revealed-count>0</strong><span>已揭示</span></div>
-        <div><strong data-verified-count>0</strong><span>验证通过</span></div>
+        <div><strong data-record-count>0</strong><span>窗口内承诺</span></div>
+        <div><strong data-revealed-count>0</strong><span>窗口内已揭示</span></div>
+        <div><strong data-verified-count>0</strong><span>窗口内验证通过</span></div>
       </div>
       <div id="history-list" class="history-list" aria-live="polite">
         <div class="empty-record">

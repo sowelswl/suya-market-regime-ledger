@@ -1,0 +1,29 @@
+{
+  "policy_id": "suya-ledger-publication-boundary",
+  "version": "1.0.0",
+  "status": "frozen",
+  "effective_from": "2026-08-07",
+  "current_public_tree": {
+    "signal_window_in_trading_days": 20,
+    "commitments_outside_window": "retained_without_revealed_state",
+    "reveals_outside_window": "removed_from_current_tree",
+    "private_full_history": "retained_outside_repository"
+  },
+  "historical_evaluation": {
+    "aggregate_metrics": true,
+    "raw_daily_signal_sequence": false,
+    "individual_historical_signal_dates": false,
+    "source_snapshot_hash": true,
+    "state_minimum_observations": 10,
+    "annual_minimum_observations": 20
+  },
+  "threat_model": {
+    "protects_against_casual_bulk_history_access": true,
+    "protects_against_persistent_archiving": false,
+    "git_history_may_retain_previously_public_reveals": true
+  },
+  "versioning": {
+    "mutation": "forbidden",
+    "change_process": "publish_a_new_version"
+  }
+}

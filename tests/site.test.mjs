@@ -24,11 +24,16 @@ test("the public site explains the ledger without requiring GitHub knowledge", a
   assert.match(html, /不需要 GitHub|无需 GitHub/)
   assert.match(html, /id="latest-record"/)
   assert.match(html, /id="history-list"/)
+  assert.match(html, /id="evaluation"/)
+  assert.match(html, /历史评价/)
+  assert.match(html, /最近 20 个交易日/)
   assert.match(html, /id="verification-panel"/)
   assert.match(css, /@media.*max-width/s)
   assert.match(script, /crypto\.subtle\.digest/)
   assert.match(script, /\.\/data\/index\.json/)
   assert.match(script, /verifyReveal/)
+  assert.match(script, /historical_evaluation/)
+  assert.match(script, /direction_hit_rate/)
 })
 
 test("the public docs snapshot and Sigstore publish the evidence", async () => {

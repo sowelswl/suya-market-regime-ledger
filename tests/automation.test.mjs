@@ -12,7 +12,10 @@ test("the daily publisher reads local secrets, publishes one fresh record and st
   assert.match(script, /TZ=Asia\/Shanghai date \+%F/)
   assert.match(script, /publish-from-database\.mjs/)
   assert.match(script, /reveal-due-from-database\.mjs/)
+  assert.match(script, /build-historical-evaluation-from-database\.mjs/)
+  assert.match(script, /prune-public-reveals\.mjs/)
   assert.match(script, /git add commitments reveals/)
+  assert.match(script, /evaluation\/public\/history\.json/)
   assert.match(script, /git@github\.com:sowelswl\/suya-market-regime-ledger\.git/)
   assert.match(script, /trap[^\n]*ERR/)
   assert.match(script, /数据库[^\n]*新鲜|database[^\n]*fresh/i)
@@ -42,7 +45,8 @@ test("the public docs snapshot is built locally without deploy-pages", async () 
 
   assert.match(packageJson, /"build:pages":\s*"node bin\/build-pages\.mjs"/)
   assert.match(publisher, /npm run build:pages/)
-  assert.match(publisher, /git add commitments reveals docs/)
+  assert.match(publisher, /prune-public-reveals\.mjs/)
+  assert.match(publisher, /git add commitments reveals[^\n]*docs/)
   await assert.rejects(
     readFile(new URL("../.github/workflows/pages.yml", import.meta.url), "utf8"),
     (error) => error?.code === "ENOENT",
