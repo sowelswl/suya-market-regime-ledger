@@ -62,6 +62,115 @@ function formatDate(value) {
   return new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(`${value}T00:00:00+08:00`))
 }
 
+function formatPercent(value, digits = 1) {
+  return Number.isFinite(value) ? `${(value * 100).toFixed(digits)}%` : "—"
+}
+
+function appendTable(parent, rows, columns, label) {
+  const wrapper = document.createElement("div")
+  wrapper.className = "evaluation-table-wrap"
+  const table = document.createElement("table")
+  table.className = "evaluation-table"
+  table.setAttribute("aria-label", label)
+  const head = document.createElement("thead")
+  const headRow = document.createElement("tr")
+  for (const column of columns) {
+    const cell = document.createElement("th")
+    cell.scope = "col"
+    cell.textContent = column.label
+    headRow.append(cell)
+  }
+  head.append(headRow)
+  const body = document.createElement("tbody")
+  for (const row of rows) {
+    const tableRow = document.createElement("tr")
+    for (const column of columns) {
+      const cell = document.createElement("td")
+      cell.textContent = column.value(row)
+      tableRow.append(cell)
+    }
+    body.append(tableRow)
+  }
+  table.append(head, body)
+  wrapper.append(table)
+  parent.append(wrapper)
+}
+
+function renderEvaluation(report) {
+  const container = document.querySelector("#evaluation-benchmarks")
+  if (!container) return
+  if (!report?.benchmarks || !report?.scope) {
+    container.textContent = "历史聚合评价暂不可用"
+    return
+  }
+
+  text("[data-evaluation-observations]", String(report.scope.observations))
+  text("[data-evaluation-range]", `${formatDate(report.scope.first_signal_date)} — ${formatDate(report.scope.last_evaluated_signal_date)}`)
+  text("[data-evaluation-policy]", `v${report.policy_version}`)
+  container.replaceChildren()
+
+  for (const benchmark of Object.values(report.benchmarks)) {
+    const card = document.createElement("article")
+    card.className = "benchmark-card"
+    const title = document.createElement("h3")
+    title.textContent = benchmark.label
+    const role = document.createElement("p")
+    role.className = "benchmark-role"
+    role.textContent = benchmark.role === "primary" ? "固定主统计代理" : "宽基辅助验证"
+
+    const metrics = document.createElement("dl")
+    metrics.className = "benchmark-metrics"
+    for (const [label, value] of [
+      ["样本", String(benchmark.overall.observations)],
+      ["方向命中", formatPercent(benchmark.overall.direction_hit_rate)],
+      ["平均次日收益", formatPercent(benchmark.overall.mean_next_day_return, 2)],
+    ]) {
+      const item = document.createElement("div")
+      const term = document.createElement("dt")
+      term.textContent = label
+      const description = document.createElement("dd")
+      description.textContent = value
+      item.append(term, description)
+      metrics.append(item)
+    }
+    card.append(title, role, metrics)
+
+    appendTable(
+      card,
+      benchmark.by_state.filter((state) => state.published),
+      [
+        { label: "状态", value: (row) => row.label },
+        { label: "样本", value: (row) => String(row.observations) },
+        { label: "方向命中", value: (row) => formatPercent(row.direction_hit_rate) },
+        { label: "平均次日", value: (row) => formatPercent(row.mean_next_day_return, 2) },
+      ],
+      `${benchmark.label}五档历史聚合评价`,
+    )
+
+    const annual = benchmark.by_year.filter((year) => year.published)
+    if (annual.length > 0) {
+      const details = document.createElement("details")
+      details.className = "annual-details"
+      const summary = document.createElement("summary")
+      summary.textContent = "查看年度聚合"
+      details.append(summary)
+      appendTable(
+        details,
+        annual,
+        [
+          { label: "年度", value: (row) => String(row.year) },
+          { label: "样本", value: (row) => String(row.observations) },
+          { label: "方向命中", value: (row) => formatPercent(row.direction_hit_rate) },
+          { label: "平均次日", value: (row) => formatPercent(row.mean_next_day_return, 2) },
+        ],
+        `${benchmark.label}年度历史聚合评价`,
+      )
+      card.append(details)
+    }
+    container.append(card)
+  }
+}
+
 function renderHistory(records, verifiedDates) {
   const list = document.querySelector("#history-list")
   if (!list || records.length === 0) return
@@ -101,6 +210,7 @@ function renderHistory(records, verifiedDates) {
 
 async function render(data) {
   const records = Array.isArray(data.records) ? data.records : []
+  renderEvaluation(data.historical_evaluation)
   const verifiedDates = new Set()
   for (const record of records) {
     if (record.reveal && await verifyReveal(record.commitment, record.reveal)) {

@@ -51,10 +51,14 @@ node bin/publish-from-database.mjs \
   --committed-at "$committed_at"
 failure_stage="到期揭示"
 node bin/reveal-due-from-database.mjs
+failure_stage="历史聚合评价"
+node bin/build-historical-evaluation-from-database.mjs
+failure_stage="公开信号窗口更新"
+node bin/prune-public-reveals.mjs
 failure_stage="公开快照生成"
 npm run build:pages
 
-git add commitments reveals docs
+git add commitments reveals evaluation/public/history.json docs
 if git diff --cached --quiet; then
   echo "No public ledger evidence to publish"
   exit 0

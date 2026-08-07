@@ -105,6 +105,31 @@ h1 { margin: 0; font-size: clamp(58px, 7.5vw, 102px); line-height: .98; }
 .state-scale small { color: rgba(255,255,255,.58); }
 .boundary-copy { max-width: 680px; margin: 32px 0 0 auto; color: rgba(255,255,255,.62); }
 
+.evaluation-section { padding: 130px 0; background: var(--white); }
+.evaluation-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 70px; overflow: hidden; background: var(--line); border: 1px solid var(--line); border-radius: 20px; }
+.evaluation-summary div { padding: 28px; background: var(--paper); }
+.evaluation-summary strong, .evaluation-summary span { display: block; }
+.evaluation-summary strong { font: 38px var(--serif); }
+.evaluation-summary span { color: var(--muted); font-size: 13px; }
+.evaluation-benchmarks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 22px; }
+.evaluation-empty { grid-column: 1 / -1; padding: 50px 28px; color: var(--muted); background: var(--paper); border-radius: 20px; text-align: center; }
+.benchmark-card { min-width: 0; padding: 30px; background: var(--paper); border: 1px solid var(--line); border-radius: 22px; }
+.benchmark-card h3 { margin: 0; font-size: 34px; }
+.benchmark-role { margin: 4px 0 24px; color: var(--muted); font-size: 13px; }
+.benchmark-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 28px; }
+.benchmark-metrics div { padding: 14px; background: var(--white); border-radius: 14px; }
+.benchmark-metrics dt { color: var(--muted); font-size: 12px; }
+.benchmark-metrics dd { margin: 3px 0 0; font: 24px var(--serif); }
+.evaluation-table-wrap { overflow-x: auto; }
+.evaluation-table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+.evaluation-table th, .evaluation-table td { padding: 11px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.evaluation-table th:first-child, .evaluation-table td:first-child { text-align: left; }
+.evaluation-table th { color: var(--muted); font-weight: 600; }
+.annual-details { margin-top: 18px; }
+.annual-details summary { color: var(--emerald); cursor: pointer; font-weight: 650; }
+.annual-details .evaluation-table { margin-top: 10px; }
+.evaluation-boundary { max-width: 820px; margin: 30px 0 0; color: var(--muted); font-size: 13px; }
+
 .history { padding: 130px 0; }
 .section-heading { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr); gap: 80px; align-items: end; }
 .section-heading > p { margin: 0 0 8px; color: var(--muted); }
@@ -151,6 +176,7 @@ h1 { margin: 0; font-size: clamp(58px, 7.5vw, 102px); line-height: .98; }
   .latest-card { max-width: 620px; }
   .state-scale { grid-template-columns: repeat(5, minmax(140px, 1fr)); overflow-x: auto; }
   .method-grid { grid-template-columns: repeat(2, 1fr); }
+  .evaluation-benchmarks { grid-template-columns: 1fr; }
   .method-grid li:nth-child(2) { border-right: 0; }
   .history-record { grid-template-columns: 58px 130px 1fr; }
   .record-status { grid-column: 3; justify-self: start; }
@@ -165,6 +191,9 @@ h1 { margin: 0; font-size: clamp(58px, 7.5vw, 102px); line-height: .98; }
   .latest-card { padding: 24px; }
   .state-band, .history, .method-section { padding-block: 90px; }
   .history-summary { grid-template-columns: 1fr; }
+  .evaluation-summary { grid-template-columns: 1fr; }
+  .evaluation-summary div { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+  .benchmark-metrics { grid-template-columns: 1fr; }
   .history-summary div { display: flex; justify-content: space-between; align-items: center; }
   .history-record { grid-template-columns: 1fr 1fr; gap: 10px; }
   .record-state, .record-status { grid-column: 1 / -1; }
