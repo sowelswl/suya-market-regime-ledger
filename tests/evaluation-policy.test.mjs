@@ -84,3 +84,26 @@ test("evaluation v1.1 is included in external attestation without deleting v1", 
   assert.match(workflow, /CORRECTIONS\.md/)
   assert.match(workflow, /corrections\/\*\*\/\*\.jsonl/)
 })
+
+test("evaluation v1.2 freezes five broad-index reports while retaining CSI 500 as primary", async () => {
+  const [policySource, methodology, workflow] = await Promise.all([
+    read("evaluation/v1.2.json"),
+    read("EVALUATION_V1_2.md"),
+    read(".github/workflows/attest.yml"),
+  ])
+  const policy = JSON.parse(policySource)
+
+  assert.equal(policy.version, "1.2.0")
+  assert.equal(policy.previous_version, "1.1.0")
+  assert.equal(policy.benchmark.primary.index_code, "000905")
+  assert.deepEqual(policy.benchmark.secondary.map((item) => item.index_name), [
+    "沪深300",
+    "中证1000",
+    "中证2000",
+    "上证指数",
+  ])
+  assert.match(methodology, /中证500[\s\S]*沪深300[\s\S]*中证1000[\s\S]*中证2000[\s\S]*上证指数/)
+  assert.match(methodology, /相同[\s\S]*下一交易日/)
+  assert.match(workflow, /evaluation\/v1\.2\.json/)
+  assert.match(workflow, /EVALUATION_V1_2\.md/)
+})

@@ -1,0 +1,44 @@
+{
+  "policy_id": "suya-market-regime-evaluation",
+  "version": "1.2.0",
+  "previous_version": "1.1.0",
+  "status": "frozen",
+  "effective_from": "2026-08-07",
+  "change_reason": "freeze_additional_broad_index_validation_before_publishing_their_results",
+  "scope": {
+    "market": "broad_market_indices",
+    "description": "one signal for the next trading session direction of the broad equity market"
+  },
+  "benchmark": {
+    "role": "fixed_primary_with_separately_reported_secondary_indices",
+    "primary": {
+      "index_name": "中证500",
+      "index_code": "000905",
+      "return_type": "price_return"
+    },
+    "secondary": [
+      { "index_name": "沪深300", "index_code": "000300", "return_type": "price_return" },
+      { "index_name": "中证1000", "index_code": "000852", "return_type": "price_return" },
+      { "index_name": "中证2000", "index_code": "932000", "return_type": "price_return" },
+      { "index_name": "上证指数", "index_code": "000001", "return_type": "price_return" }
+    ],
+    "selection": "fixed_and_reported_separately_without_post_hoc_replacement"
+  },
+  "daily": {
+    "unit": "every_complete_historical_signal_observation",
+    "horizons_in_trading_days": [1],
+    "return_formula": "close[t+1] / close[t] - 1",
+    "bullish_levels": [0, 1, 2],
+    "bearish_levels": [-2, -1],
+    "zero_return": "miss"
+  },
+  "reporting": {
+    "minimum_records_per_state_for_state_metric": 10,
+    "raw_historical_signal_sequence": "private",
+    "aggregate_results": "public"
+  },
+  "versioning": {
+    "mutation": "forbidden",
+    "previous_versions": "retained"
+  }
+}
