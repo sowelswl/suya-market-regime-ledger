@@ -266,7 +266,16 @@
         "canonicalization": "RFC8785-JCS",
         "commitment": "sha256:b00b380d4606dd0a5468097738c2306e86aa5d005d2c1d96e134137e2b842e33"
       },
-      "reveal": null
+      "reveal": null,
+      "corrections": [
+        {
+          "as_of_trade_date": "2026-08-06",
+          "recorded_at": "2026-08-07T08:45:44+08:00",
+          "original_commitment": "sha256:b00b380d4606dd0a5468097738c2306e86aa5d005d2c1d96e134137e2b842e33",
+          "reason": "旧数据源的 trade_date 表示信号生效交易日；该记录在对应交易日收盘后提交，却标注为 next_trading_session。日期对齐检查显示，新表日期 d 与旧表下一交易日记录在 859 个重合样本中有 840 个完全一致（97.79%）。因此本记录不作为有效事前预测，也不计入前瞻绩效。",
+          "action": "invalidate"
+        }
+      ]
     }
   ]
 }

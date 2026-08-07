@@ -82,4 +82,5 @@ test("evaluation v1.1 is included in external attestation without deleting v1", 
   assert.match(workflow, /EVALUATION_V1\.md/)
   assert.match(workflow, /EVALUATION_V1_1\.md/)
   assert.match(workflow, /CORRECTIONS\.md/)
+  assert.match(workflow, /corrections\/\*\*\/\*\.jsonl/)
 })

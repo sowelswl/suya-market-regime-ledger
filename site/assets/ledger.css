@@ -82,6 +82,7 @@ h1 { margin: 0; font-size: clamp(58px, 7.5vw, 102px); line-height: .98; }
 .status-pill { padding: 7px 11px; color: var(--forest); background: var(--mint); border-radius: 999px; font-weight: 700; }
 .status-pill[data-status="verified"] { color: #0e5a3f; background: #d7eee3; }
 .status-pill[data-status="pending"] { color: #815b16; background: #f3e6bd; }
+.status-pill[data-status="invalidated"] { color: #8a3030; background: #f2d8d5; }
 .latest-state { display: grid; width: 80px; height: 80px; margin: 54px 0 26px; color: var(--white); background: var(--forest); border-radius: 22px; place-items: center; font: 36px var(--serif); }
 .latest-card h2 { margin: 0; font-size: 34px; line-height: 1.1; }
 .latest-card > p { color: var(--muted); }
@@ -148,6 +149,7 @@ h1 { margin: 0; font-size: clamp(58px, 7.5vw, 102px); line-height: .98; }
 .record-state small { color: var(--muted); }
 .record-status { justify-self: end; padding: 7px 12px; border-radius: 999px; background: var(--paper-deep); font-size: 12px; font-weight: 700; }
 .record-status.verified { color: #0e5a3f; background: #d7eee3; }
+.record-status.invalidated { color: #8a3030; background: #f2d8d5; }
 
 .method-section { padding: 128px 0; color: var(--white); background: var(--forest-soft); }
 .method-section .eyebrow { color: #8ed0b5; }
