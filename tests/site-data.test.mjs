@@ -22,13 +22,24 @@ test("site data joins public commitments and reveals without private material", 
 
   await mkdir(path.join(root, "commitments/2026/08"), { recursive: true })
   await mkdir(path.join(root, "reveals/2026/08"), { recursive: true })
+  await mkdir(path.join(root, "corrections"), { recursive: true })
   await writeFile(path.join(root, "commitments/2026/08/2026-08-05.json"), JSON.stringify(entry.commitment))
   await writeFile(path.join(root, "reveals/2026/08/2026-08-05.json"), JSON.stringify(entry.reveal))
+  await writeFile(path.join(root, "corrections/corrections.jsonl"), `${JSON.stringify({
+    as_of_trade_date: "2026-08-05",
+    recorded_at: "2026-08-07T09:00:00+08:00",
+    original_commitment: entry.commitment.commitment,
+    reason: "日期错位，不计入前瞻绩效",
+    action: "invalidate",
+  })}\n`)
 
   const data = await buildSiteData(root)
   assert.equal(data.records.length, 1)
   assert.equal(data.records[0].commitment.as_of_trade_date, "2026-08-05")
   assert.equal(data.records[0].reveal.signal_label, "强空")
+  assert.equal(data.records[0].corrections.length, 1)
+  assert.equal(data.records[0].corrections[0].action, "invalidate")
+  assert.match(data.records[0].corrections[0].reason, /日期错位/)
   assert.equal(data.generated_at, entry.commitment.committed_at)
   assert.equal("private" in data, false)
 })

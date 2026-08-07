@@ -34,6 +34,9 @@ test("the public site explains the ledger without requiring GitHub knowledge", a
   assert.match(script, /verifyReveal/)
   assert.match(script, /historical_evaluation/)
   assert.match(script, /direction_hit_rate/)
+  assert.match(script, /invalidatedDates/)
+  assert.match(script, /已作废/)
+  assert.match(script, /corrections/)
 })
 
 test("the public docs snapshot and Sigstore publish the evidence", async () => {

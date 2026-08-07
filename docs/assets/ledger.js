@@ -70,6 +70,11 @@ function formatPercent(value, digits = 1) {
   return Number.isFinite(value) ? `${(value * 100).toFixed(digits)}%` : "—"
 }
 
+function invalidationFor(record) {
+  const corrections = Array.isArray(record.corrections) ? record.corrections : []
+  return [...corrections].reverse().find((correction) => correction.action === "invalidate") ?? null
+}
+
 function appendTable(parent, rows, columns, label) {
   const wrapper = document.createElement("div")
   wrapper.className = "evaluation-table-wrap"
@@ -175,12 +180,14 @@ function renderEvaluation(report) {
   }
 }
 
-function renderHistory(records, verifiedDates) {
+function renderHistory(records, verifiedDates, invalidatedDates) {
   const list = document.querySelector("#history-list")
   if (!list || records.length === 0) return
   list.replaceChildren()
 
   for (const record of records) {
+    const invalidation = invalidationFor(record)
+    const invalidated = invalidatedDates.has(record.commitment.as_of_trade_date)
     const row = document.createElement("article")
     row.className = "history-record"
 
@@ -196,14 +203,16 @@ function renderHistory(records, verifiedDates) {
     const state = document.createElement("div")
     state.className = "record-state"
     const stateTitle = document.createElement("strong")
-    stateTitle.textContent = record.reveal?.signal_label ?? "状态尚未揭示"
+    stateTitle.textContent = invalidated ? "记录已作废" : (record.reveal?.signal_label ?? "状态尚未揭示")
     const digest = document.createElement("small")
-    digest.textContent = `${record.commitment.commitment.slice(0, 18)}…`
+    digest.textContent = invalidated ? invalidation.reason : `${record.commitment.commitment.slice(0, 18)}…`
     state.append(stateTitle, digest)
 
     const status = document.createElement("span")
-    status.className = `record-status ${verifiedDates.has(record.commitment.as_of_trade_date) ? "verified" : ""}`
-    status.textContent = record.reveal
+    status.className = `record-status ${invalidated ? "invalidated" : (verifiedDates.has(record.commitment.as_of_trade_date) ? "verified" : "")}`
+    status.textContent = invalidated
+      ? "已作废"
+      : record.reveal
       ? (verifiedDates.has(record.commitment.as_of_trade_date) ? "验证通过" : "验证失败")
       : "等待揭示"
 
@@ -215,9 +224,14 @@ function renderHistory(records, verifiedDates) {
 async function render(data) {
   const records = Array.isArray(data.records) ? data.records : []
   renderEvaluation(data.historical_evaluation)
+  const invalidatedDates = new Set(records
+    .filter((record) => invalidationFor(record))
+    .map((record) => record.commitment.as_of_trade_date))
   const verifiedDates = new Set()
   for (const record of records) {
-    if (record.reveal && await verifyReveal(record.commitment, record.reveal)) {
+    if (!invalidatedDates.has(record.commitment.as_of_trade_date)
+      && record.reveal
+      && await verifyReveal(record.commitment, record.reveal)) {
       verifiedDates.add(record.commitment.as_of_trade_date)
     }
   }
@@ -225,29 +239,35 @@ async function render(data) {
   text("[data-record-count]", String(records.length))
   text("[data-revealed-count]", String(records.filter((record) => record.reveal).length))
   text("[data-verified-count]", String(verifiedDates.size))
-  renderHistory(records, verifiedDates)
+  renderHistory(records, verifiedDates, invalidatedDates)
 
   const latest = records[0]
   if (!latest) return
 
+  const invalidation = invalidationFor(latest)
+  const invalidated = invalidatedDates.has(latest.commitment.as_of_trade_date)
   const verified = verifiedDates.has(latest.commitment.as_of_trade_date)
   const pill = document.querySelector("[data-status-pill]")
   if (pill) {
-    pill.textContent = verified ? "验证通过" : (latest.reveal ? "验证失败" : "等待揭示")
-    pill.dataset.status = verified ? "verified" : "pending"
+    pill.textContent = invalidated ? "已作废" : (verified ? "验证通过" : (latest.reveal ? "验证失败" : "等待揭示"))
+    pill.dataset.status = invalidated ? "invalidated" : (verified ? "verified" : "pending")
   }
   text("[data-record-sequence]", `#${String(latest.commitment.sequence).padStart(3, "0")}`)
-  text("[data-latest-state]", latest.reveal?.signal_label ?? "密")
-  text("[data-latest-title]", latest.reveal ? "原始状态已经公开" : "事前承诺已经锁定")
+  text("[data-latest-state]", invalidated ? "废" : (latest.reveal?.signal_label ?? "密"))
+  text("[data-latest-title]", invalidated ? "该记录已作废" : (latest.reveal ? "原始状态已经公开" : "事前承诺已经锁定"))
   text(
     "[data-latest-description]",
-    latest.reveal
+    invalidated
+      ? `${invalidation.reason} 原始 commitment 与哈希证据仍完整保留。`
+      : latest.reveal
       ? (verified ? "浏览器已重新计算 SHA-256，揭示内容与事前承诺完全一致。" : "揭示内容与事前承诺不一致，请停止引用该记录。")
       : "市场状态与随机 nonce 尚未公开；五个后续交易观测日后自动揭示。",
   )
   text("[data-as-of-date]", formatDate(latest.commitment.as_of_trade_date))
-  text("[data-proof-status]", latest.reveal ? (verified ? "SHA-256 验证通过" : "验证失败") : "承诺已生成")
-  text("[data-verifier-demo]", verifiedDates.size > 0 ? `${verifiedDates.size} 条记录验证通过` : "等待可验证记录")
+  text("[data-proof-status]", invalidated ? "哈希保留 · 不计入绩效" : (latest.reveal ? (verified ? "SHA-256 验证通过" : "验证失败") : "承诺已生成"))
+  text("[data-verifier-demo]", invalidatedDates.size > 0 && verifiedDates.size === 0
+    ? `${invalidatedDates.size} 条记录已作废`
+    : (verifiedDates.size > 0 ? `${verifiedDates.size} 条记录验证通过` : "等待可验证记录"))
 }
 
 async function boot() {
