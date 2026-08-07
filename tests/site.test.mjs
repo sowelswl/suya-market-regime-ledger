@@ -26,6 +26,8 @@ test("the public site explains the ledger without requiring GitHub knowledge", a
   assert.match(html, /id="history-list"/)
   assert.match(html, /id="evaluation"/)
   assert.match(html, /历史评价/)
+  assert.match(html, /每天一条[\s\S]*时序信号/)
+  assert.match(html, /核心研究资产/)
   assert.match(html, /最近 20 个交易日/)
   assert.match(html, /id="verification-panel"/)
   assert.match(css, /@media.*max-width/s)
@@ -40,9 +42,10 @@ test("the public site explains the ledger without requiring GitHub knowledge", a
 })
 
 test("the public docs snapshot and Sigstore publish the evidence", async () => {
-  const [sourceHtml, publishedHtml, builder, attest] = await Promise.all([
+  const [sourceHtml, publishedHtml, publishedData, builder, attest] = await Promise.all([
     read("site/index.html"),
     read("docs/index.html"),
+    read("docs/data/index.json"),
     read("bin/build-pages.mjs"),
     read(".github/workflows/attest.yml"),
   ])
@@ -55,6 +58,14 @@ test("the public docs snapshot and Sigstore publish the evidence", async () => {
   assert.match(attest, /id-token:\s*write/)
   assert.match(attest, /attestations:\s*write/)
   assert.match(attest, /commitments\/\*\*\/\*\.json/)
+  const data = JSON.parse(publishedData)
+  assert.deepEqual(Object.keys(data.historical_evaluation.benchmarks), [
+    "csi500",
+    "hs300",
+    "csi1000",
+    "csi2000",
+    "sse_composite",
+  ])
 })
 
 test("the browser verifier independently accepts a valid reveal and rejects tampering", async () => {

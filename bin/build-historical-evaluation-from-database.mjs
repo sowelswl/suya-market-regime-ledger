@@ -33,10 +33,15 @@ async function main() {
     database: "aistk",
     application_name: "suya_historical_market_reader",
   })
+  const indexClient = new pg.Client({
+    ...common,
+    database: "cn_stock_db",
+    application_name: "suya_historical_index_reader",
+  })
 
   try {
-    await Promise.all([signalClient.connect(), marketClient.connect()])
-    const rows = await fetchHistoricalEvaluationRows(signalClient, marketClient)
+    await Promise.all([signalClient.connect(), marketClient.connect(), indexClient.connect()])
+    const rows = await fetchHistoricalEvaluationRows(signalClient, marketClient, indexClient)
     const report = buildHistoricalEvaluation(rows)
     await mkdir(path.dirname(output), { recursive: true })
     await writeFile(output, `${JSON.stringify(report, null, 2)}\n`, "utf8")
@@ -45,6 +50,7 @@ async function main() {
     await Promise.all([
       signalClient.end().catch(() => {}),
       marketClient.end().catch(() => {}),
+      indexClient.end().catch(() => {}),
     ])
   }
 }
