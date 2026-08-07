@@ -2,8 +2,10 @@ import assert from "node:assert/strict"
 import test from "node:test"
 
 import {
+  LEGACY_SOURCE_NAME,
   MARKET_STATES,
   SIGNAL_LEVELS,
+  SOURCE_NAME,
   createLedgerEntry,
   verifyReveal,
 } from "../lib/ledger.mjs"
@@ -52,7 +54,27 @@ test("a v2 public commitment hides the state and nonce while the reveal verifies
   assert.equal(reveal.signal_level, 1)
   assert.equal(reveal.signal_label, "弱多")
   assert.equal(reveal.nonce, base.nonce)
+  assert.match(SOURCE_NAME, /signal_db\.public\.jq_time_series_signal_daily/)
+  assert.match(SOURCE_NAME, /ret_trend_lev_ma_5level_calendar/)
+  assert.match(SOURCE_NAME, /3\.2/)
+  assert.equal(commitment.source, SOURCE_NAME)
   assert.equal(verifyReveal(commitment, reveal), true)
+})
+
+test("source migration keeps legacy commitments verifiable without relabeling them", () => {
+  const legacy = createLedgerEntry({ ...base, source: LEGACY_SOURCE_NAME })
+
+  assert.match(LEGACY_SOURCE_NAME, /micro_timing_final_tail_hold_dates/)
+  assert.equal(legacy.commitment.source, LEGACY_SOURCE_NAME)
+  assert.equal(legacy.reveal.source, LEGACY_SOURCE_NAME)
+  assert.equal(verifyReveal(legacy.commitment, legacy.reveal), true)
+  assert.equal(
+    verifyReveal(
+      { ...legacy.commitment, source: "unknown.source" },
+      { ...legacy.reveal, source: "unknown.source" },
+    ),
+    false,
+  )
 })
 
 test("the commitment is deterministic and any material change fails verification", () => {

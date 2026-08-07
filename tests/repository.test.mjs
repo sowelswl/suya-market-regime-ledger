@@ -17,7 +17,9 @@ test("repository documents the prospective proof boundary and five-state method"
 
   assert.match(readme, /事前|prospective/i)
   assert.match(readme, /五个交易日/)
-  assert.match(readme, /micro_timing_final_tail_hold_dates/)
+  assert.match(readme, /jq_time_series_signal_daily/)
+  assert.match(readme, /ret_trend_lev_ma_5level_calendar/)
+  assert.match(readme, /3\.2/)
   assert.match(readme, /RFC\s*8785/i)
   assert.match(readme, /Sigstore|Rekor/i)
   assert.match(readme, /公开前端|weilisong\.com/i)

@@ -26,7 +26,7 @@ async function main() {
     port: Number(requiredEnv("PG_NAS_PORT")),
     user: requiredEnv("PG_NAS_USER"),
     password: requiredEnv("PG_NAS_PASSWORD"),
-    database: "aistk",
+    database: "signal_db",
     application_name: "suya_public_ledger_reader",
     connectionTimeoutMillis: 10_000,
     statement_timeout: 10_000,
