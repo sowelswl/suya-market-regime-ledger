@@ -23,10 +23,29 @@ test("the daily publisher reads local secrets, publishes one fresh record and st
   assert.match(script, /数据库[^\n]*新鲜|database[^\n]*fresh/i)
   assert.match(script, /GitHub[^\n]*push|push[^\n]*GitHub/i)
   assert.match(script, /notify_ledger/)
+  assert.match(script, /SUYA_NODE_BIN/)
+  assert.match(script, /Node[^\n]*(?:runtime|运行时)/i)
+  assert.match(script, /发布成功/)
   assert.match(notifier, /osascript/)
+  assert.match(notifier, /Notification delivery failed|通知[^\n]*失败/)
+  assert.doesNotMatch(notifier, /2>&1\s*\|\|\s*true/)
   assert.doesNotMatch(script, /git add -A/)
   assert.doesNotMatch(script, /PASSWORD=.*[^$]/)
   assert.doesNotMatch(notifier, /PASSWORD|TOKEN|shared\.env/)
+})
+
+test("the launchd installer uses the correct Monday through Friday calendar and pinned Node runtime", async () => {
+  const installer = await readFile(new URL("../ops/install-launchd.sh", import.meta.url), "utf8")
+
+  assert.match(installer, /for weekday in 1 2 3 4 5/)
+  assert.doesNotMatch(installer, /for weekday in 2 3 4 5 6/)
+  assert.match(installer, /Hour[^\n]*20|<integer>20<\/integer>/)
+  assert.match(installer, /publisher_plist=[\s\S]*?\n\s+5\)"/)
+  assert.match(installer, /watchdog_plist=[\s\S]*?\n\s+20 40\)"/)
+  assert.match(installer, /SUYA_NODE_BIN/)
+  assert.match(installer, /node@24/)
+  assert.match(installer, /plutil[^\n]*-lint/)
+  assert.match(installer, /launchctl[^\n]*bootstrap/)
 })
 
 test("the launchd runbook schedules weekdays after the database generation window", async () => {
@@ -46,7 +65,7 @@ test("the public docs snapshot is built locally without deploy-pages", async () 
   ])
 
   assert.match(packageJson, /"build:pages":\s*"node bin\/build-pages\.mjs"/)
-  assert.match(publisher, /npm run build:pages/)
+  assert.match(publisher, /npm_bin["']?\s+run build:pages/)
   assert.match(publisher, /prune-public-reveals\.mjs/)
   assert.match(publisher, /git add commitments reveals[^\n]*docs/)
   await assert.rejects(

@@ -59,3 +59,17 @@ test("the source reader rolls back when validation fails", async () => {
   await assert.rejects(fetchLatestSignal(client, { expectedAsOfDate: "2026-08-05" }), /signal level/i)
   assert.equal(queries.at(-1).sql, "ROLLBACK")
 })
+
+test("the source reader explains when the configured signal source has no rows", async () => {
+  const client = {
+    async query(sql) {
+      if (/SELECT/i.test(sql)) return { rows: [] }
+      return { rows: [] }
+    },
+  }
+
+  await assert.rejects(
+    fetchLatestSignal(client, { expectedAsOfDate: "2026-08-11" }),
+    /configured signal source has no rows/i,
+  )
+})
