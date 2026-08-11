@@ -6,6 +6,7 @@ state_dir="${SUYA_LEDGER_STATE_DIR:-$HOME/.local/state/suya-market-regime-ledger
 launch_agents_dir="$HOME/Library/LaunchAgents"
 node_bin="${SUYA_NODE_BIN:-/opt/homebrew/opt/node@24/bin/node}"
 npm_bin="${SUYA_NPM_BIN:-/opt/homebrew/opt/node@24/bin/npm}"
+dry_run="${SUYA_LAUNCHD_DRY_RUN:-0}"
 runtime_path="${node_bin:h}:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 domain="gui/$(id -u)"
 
@@ -34,6 +35,7 @@ build_plist() {
   shift 4
   local target="$temporary_dir/$label.plist"
   local index=0
+  local minute
 
   plutil -create xml1 "$target"
   /usr/libexec/PlistBuddy -c "Add :Label string $label" "$target"
@@ -52,7 +54,6 @@ build_plist() {
   /usr/libexec/PlistBuddy -c "Add :StartCalendarInterval array" "$target"
 
   for weekday in 1 2 3 4 5; do
-    local minute
     for minute in "$@"; do
       /usr/libexec/PlistBuddy -c "Add :StartCalendarInterval:$index dict" "$target"
       /usr/libexec/PlistBuddy -c "Add :StartCalendarInterval:$index:Weekday integer $weekday" "$target"
@@ -101,6 +102,11 @@ watchdog_plist="$(build_plist \
   "$state_dir/watchdog.log" \
   "$state_dir/watchdog.error.log" \
   20 40)"
+
+if [[ "$dry_run" == "1" ]]; then
+  echo "Validated weekday ledger jobs with pinned Node runtime"
+  exit 0
+fi
 
 install_plist com.suya.market-regime-ledger "$publisher_plist"
 install_plist com.suya.market-regime-ledger-watchdog "$watchdog_plist"
