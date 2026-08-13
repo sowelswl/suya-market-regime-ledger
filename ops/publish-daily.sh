@@ -13,7 +13,9 @@ handle_failure() {
   local exit_code="$1"
   trap - ERR
   echo "Publisher failed during $failure_stage" >&2
-  notify_ledger "发布失败（${failure_stage}），请查看 publisher.error.log"
+  if [[ "${SUYA_DEFER_FAILURE_NOTIFICATION:-0}" != "1" ]]; then
+    notify_ledger "发布失败（${failure_stage}），请查看 publisher.error.log"
+  fi
   exit "$exit_code"
 }
 trap 'handle_failure $?' ERR

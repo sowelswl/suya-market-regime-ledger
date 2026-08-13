@@ -18,7 +18,7 @@ if [[ ! -x "$npm_bin" ]]; then
   echo "npm runtime is unavailable: $npm_bin" >&2
   exit 1
 fi
-if [[ ! -x "$ledger_repo/ops/publish-daily.sh" ]] || [[ ! -x "$ledger_repo/ops/verify-daily-publication.sh" ]]; then
+if [[ ! -x "$ledger_repo/ops/publish-daily.sh" ]] || [[ ! -x "$ledger_repo/ops/publish-with-retry.sh" ]]; then
   echo "Ledger runtime scripts are unavailable in $ledger_repo" >&2
   exit 1
 fi
@@ -92,22 +92,17 @@ install_plist() {
 
 publisher_plist="$(build_plist \
   com.suya.market-regime-ledger \
-  "$ledger_repo/ops/publish-daily.sh" \
+  "$ledger_repo/ops/publish-with-retry.sh" \
   "$state_dir/publisher.log" \
   "$state_dir/publisher.error.log" \
-  5)"
-watchdog_plist="$(build_plist \
-  com.suya.market-regime-ledger-watchdog \
-  "$ledger_repo/ops/verify-daily-publication.sh" \
-  "$state_dir/watchdog.log" \
-  "$state_dir/watchdog.error.log" \
-  20 40)"
+  10)"
 
 if [[ "$dry_run" == "1" ]]; then
-  echo "Validated weekday ledger jobs with pinned Node runtime"
+  echo "Validated the single weekday ledger publisher with pinned Node runtime"
   exit 0
 fi
 
+launchctl bootout "$domain/com.suya.market-regime-ledger-watchdog" >/dev/null 2>&1 || true
+launchctl disable "$domain/com.suya.market-regime-ledger-watchdog"
 install_plist com.suya.market-regime-ledger "$publisher_plist"
-install_plist com.suya.market-regime-ledger-watchdog "$watchdog_plist"
-echo "Installed weekday ledger jobs with pinned Node runtime"
+echo "Installed the single weekday ledger publisher with pinned Node runtime"
