@@ -49,6 +49,10 @@ test("the launchd installer uses the correct Monday through Friday calendar and 
   assert.doesNotMatch(installer, /for weekday in 1 2 3 4 5; do\s+\n\s*local minute/)
   assert.match(installer, /plutil[^\n]*-lint/)
   assert.match(installer, /launchctl[^\n]*bootstrap/)
+  assert.ok(
+    installer.indexOf('launchctl enable "$domain/$label"') <
+      installer.indexOf('launchctl bootstrap "$domain" "$destination"'),
+  )
 })
 
 test("the launchd runbook schedules weekdays after the database generation window", async () => {
