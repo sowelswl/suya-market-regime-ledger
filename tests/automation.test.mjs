@@ -86,7 +86,9 @@ test("the local publisher retries only stale-source failures through 20:40", asy
   assert.doesNotMatch(script, /Healthchecks|ping\//i)
 })
 
-test("the retry wrapper preserves the publisher failure code at the deadline", async () => {
+test("the retry wrapper preserves the publisher failure code at the deadline", {
+  skip: process.platform !== "darwin" && "launchd publisher runs only on macOS",
+}, async () => {
   const temporaryRoot = await mkdtemp(path.join(tmpdir(), "suya-ledger-retry-"))
   const opsDir = path.join(temporaryRoot, "ops")
   const fakePublisher = path.join(temporaryRoot, "fake-publisher.sh")
