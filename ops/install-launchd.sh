@@ -78,6 +78,7 @@ install_plist() {
   fi
   install -m 644 "$generated" "$destination"
   launchctl bootout "$domain/$label" >/dev/null 2>&1 || true
+  launchctl enable "$domain/$label"
   if ! launchctl bootstrap "$domain" "$destination"; then
     echo "Failed to load $label; restoring the previous plist" >&2
     if [[ -f "$backup" ]]; then
@@ -86,7 +87,6 @@ install_plist() {
     fi
     exit 1
   fi
-  launchctl enable "$domain/$label"
   launchctl print "$domain/$label" >/dev/null
 }
 

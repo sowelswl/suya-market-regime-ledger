@@ -57,6 +57,10 @@ test("the launchd installer installs one weekday publisher at 20:10 with pinned 
   assert.doesNotMatch(installer, /for weekday in 1 2 3 4 5; do\s+\n\s*local minute/)
   assert.match(installer, /plutil[^\n]*-lint/)
   assert.match(installer, /launchctl[^\n]*bootstrap/)
+  assert.ok(
+    installer.indexOf('launchctl enable "$domain/$label"') <
+      installer.indexOf('launchctl bootstrap "$domain" "$destination"'),
+  )
 })
 
 test("the launchd runbook documents one deterministic publisher and no Healthchecks", async () => {
