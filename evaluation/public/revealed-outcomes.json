@@ -1,8 +1,61 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-08-11T12:13:13.702Z",
+  "generated_at": "2026-08-14T12:10:15.847Z",
   "methodology": "next_trading_session_price_return",
   "after_the_fact": true,
   "source": "aistk+cn_stock_db",
-  "records": []
+  "records": [
+    {
+      "as_of_trade_date": "2026-08-07",
+      "outcome_trade_date": "2026-08-10",
+      "benchmarks": {
+        "csi500": {
+          "label": "中证500",
+          "return": 0.00636958
+        },
+        "hs300": {
+          "label": "沪深300",
+          "return": 0.00161468
+        },
+        "csi1000": {
+          "label": "中证1000",
+          "return": 0.00707986
+        },
+        "csi2000": {
+          "label": "中证2000",
+          "return": 0.01152901
+        },
+        "sse_composite": {
+          "label": "上证指数",
+          "return": 0.00673851
+        }
+      }
+    },
+    {
+      "as_of_trade_date": "2026-08-06",
+      "outcome_trade_date": "2026-08-07",
+      "benchmarks": {
+        "csi500": {
+          "label": "中证500",
+          "return": 0.01925572
+        },
+        "hs300": {
+          "label": "沪深300",
+          "return": 0.00927266
+        },
+        "csi1000": {
+          "label": "中证1000",
+          "return": 0.01979967
+        },
+        "csi2000": {
+          "label": "中证2000",
+          "return": 0.016068
+        },
+        "sse_composite": {
+          "label": "上证指数",
+          "return": 0.01017601
+        }
+      }
+    }
+  ]
 }

@@ -1,0 +1,13 @@
+{
+  "schema_version": "2.0",
+  "sequence": 1,
+  "previous_commitment": null,
+  "source": "aistk.public.micro_timing_final_tail_hold_dates:trend5mcx",
+  "as_of_trade_date": "2026-08-06",
+  "prediction_horizon": "next_trading_session",
+  "committed_at": "2026-08-06T20:05:11+08:00",
+  "source_generated_at": "2026-08-06T11:31:31.706Z",
+  "signal_level": 0,
+  "signal_label": "看平",
+  "nonce": "5e0e768ae47e250806a5de1f19caccb60bfa010e6380c3b471208ad7d7dcd5c3"
+}
