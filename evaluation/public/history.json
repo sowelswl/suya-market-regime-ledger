@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "policy_version": "1.2.0",
-  "generated_at": "2026-08-18T12:10:13.187Z",
+  "generated_at": "2026-08-19T12:10:14.601Z",
   "methodology": "next_trading_session_direction",
   "retrospective": true,
   "privacy": {
@@ -11,14 +11,14 @@
   },
   "scope": {
     "first_signal_date": "2023-01-30",
-    "last_evaluated_signal_date": "2026-08-17",
-    "observations": 863
+    "last_evaluated_signal_date": "2026-08-18",
+    "observations": 864
   },
   "source_snapshot": {
     "signal_source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
     "market_return_source": "aistk.public.micro_timing_final_tail_hold_dates:csi500_return,hs300_return;cn_stock_db.public.cn_stock_index_price_daily_wind:000001.SH,000852.SH,932000.CSI",
     "algorithm": "sha256",
-    "sha256": "a0ada04271d8a8156e81c8e0157b38ccb226b951d838f0ce102a2fc95b4da007",
+    "sha256": "760747b64dfdb0349ddf345c00fca8ea3e8d16ce536da2db8941a4e734be5d94",
     "raw_rows_public": false
   },
   "benchmarks": {
@@ -26,17 +26,17 @@
       "label": "中证500",
       "role": "primary",
       "overall": {
-        "observations": 863,
-        "direction_hits": 449,
-        "direction_hit_rate": 0.5202781,
-        "mean_next_day_return": 0.00041322,
-        "median_next_day_return": 0.00003683
+        "observations": 864,
+        "direction_hits": 450,
+        "direction_hit_rate": 0.52083333,
+        "mean_next_day_return": 0.00035701,
+        "median_next_day_return": 0.00003191
       },
       "state_ordering": {
         "published": true,
-        "ordered_adjacent_pairs": 4,
+        "ordered_adjacent_pairs": 3,
         "total_adjacent_pairs": 4,
-        "fully_monotonic": true
+        "fully_monotonic": false
       },
       "by_state": [
         {
@@ -53,11 +53,11 @@
           "level": -1,
           "label": "弱空",
           "published": true,
-          "observations": 146,
-          "direction_hits": 78,
-          "direction_hit_rate": 0.53424658,
-          "mean_next_day_return": -0.00151443,
-          "median_next_day_return": -0.00053136
+          "observations": 147,
+          "direction_hits": 79,
+          "direction_hit_rate": 0.53741497,
+          "mean_next_day_return": -0.00183167,
+          "median_next_day_return": -0.00073946
         },
         {
           "level": 0,
@@ -121,11 +121,11 @@
         {
           "year": 2026,
           "published": true,
-          "observations": 150,
-          "direction_hits": 84,
-          "direction_hit_rate": 0.56,
-          "mean_next_day_return": 0.00061219,
-          "median_next_day_return": 0.00221442
+          "observations": 151,
+          "direction_hits": 85,
+          "direction_hit_rate": 0.56291391,
+          "mean_next_day_return": 0.00028927,
+          "median_next_day_return": 0.00209692
         }
       ]
     },
@@ -133,11 +133,11 @@
       "label": "沪深300",
       "role": "secondary",
       "overall": {
-        "observations": 863,
-        "direction_hits": 455,
-        "direction_hit_rate": 0.52723059,
-        "mean_next_day_return": 0.0001974,
-        "median_next_day_return": -0.00023028
+        "observations": 864,
+        "direction_hits": 456,
+        "direction_hit_rate": 0.52777778,
+        "mean_next_day_return": 0.0001636,
+        "median_next_day_return": -0.000238
       },
       "state_ordering": {
         "published": true,
@@ -160,11 +160,11 @@
           "level": -1,
           "label": "弱空",
           "published": true,
-          "observations": 146,
-          "direction_hits": 81,
-          "direction_hit_rate": 0.55479452,
-          "mean_next_day_return": -0.00149098,
-          "median_next_day_return": -0.00074024
+          "observations": 147,
+          "direction_hits": 82,
+          "direction_hit_rate": 0.55782313,
+          "mean_next_day_return": -0.00167821,
+          "median_next_day_return": -0.00078294
         },
         {
           "level": 0,
@@ -228,11 +228,11 @@
         {
           "year": 2026,
           "published": true,
-          "observations": 150,
-          "direction_hits": 82,
-          "direction_hit_rate": 0.54666667,
-          "mean_next_day_return": 0.00008652,
-          "median_next_day_return": 0.0000502
+          "observations": 151,
+          "direction_hits": 83,
+          "direction_hit_rate": 0.54966887,
+          "mean_next_day_return": -0.0001062,
+          "median_next_day_return": -0.00003511
         }
       ]
     },
@@ -240,11 +240,11 @@
       "label": "中证1000",
       "role": "secondary",
       "overall": {
-        "observations": 863,
-        "direction_hits": 455,
-        "direction_hit_rate": 0.52723059,
-        "mean_next_day_return": 0.00031465,
-        "median_next_day_return": 0.00083111
+        "observations": 864,
+        "direction_hits": 456,
+        "direction_hit_rate": 0.52777778,
+        "mean_next_day_return": 0.00025191,
+        "median_next_day_return": 0.00082519
       },
       "state_ordering": {
         "published": true,
@@ -267,11 +267,11 @@
           "level": -1,
           "label": "弱空",
           "published": true,
-          "observations": 146,
-          "direction_hits": 73,
-          "direction_hit_rate": 0.5,
-          "mean_next_day_return": -0.0015661,
-          "median_next_day_return": -0.00006154
+          "observations": 147,
+          "direction_hits": 74,
+          "direction_hit_rate": 0.50340136,
+          "mean_next_day_return": -0.00192203,
+          "median_next_day_return": -0.00015373
         },
         {
           "level": 0,
@@ -335,11 +335,11 @@
         {
           "year": 2026,
           "published": true,
-          "observations": 150,
-          "direction_hits": 85,
-          "direction_hit_rate": 0.56666667,
-          "mean_next_day_return": 0.00033084,
-          "median_next_day_return": 0.00292399
+          "observations": 151,
+          "direction_hits": 86,
+          "direction_hit_rate": 0.56953642,
+          "mean_next_day_return": -0.00002822,
+          "median_next_day_return": 0.00279101
         }
       ]
     },
@@ -347,11 +347,11 @@
       "label": "中证2000",
       "role": "secondary",
       "overall": {
-        "observations": 863,
-        "direction_hits": 470,
-        "direction_hit_rate": 0.54461182,
-        "mean_next_day_return": 0.00048431,
-        "median_next_day_return": 0.00166221
+        "observations": 864,
+        "direction_hits": 471,
+        "direction_hit_rate": 0.54513889,
+        "mean_next_day_return": 0.00041899,
+        "median_next_day_return": 0.00165765
       },
       "state_ordering": {
         "published": true,
@@ -374,11 +374,11 @@
           "level": -1,
           "label": "弱空",
           "published": true,
-          "observations": 146,
-          "direction_hits": 73,
-          "direction_hit_rate": 0.5,
-          "mean_next_day_return": -0.0010436,
-          "median_next_day_return": -0.00022664
+          "observations": 147,
+          "direction_hits": 74,
+          "direction_hit_rate": 0.50340136,
+          "mean_next_day_return": -0.00141712,
+          "median_next_day_return": -0.00054321
         },
         {
           "level": 0,
@@ -442,11 +442,11 @@
         {
           "year": 2026,
           "published": true,
-          "observations": 150,
-          "direction_hits": 90,
-          "direction_hit_rate": 0.6,
-          "mean_next_day_return": 0.00009609,
-          "median_next_day_return": 0.00268663
+          "observations": 151,
+          "direction_hits": 91,
+          "direction_hit_rate": 0.60264901,
+          "mean_next_day_return": -0.00027508,
+          "median_next_day_return": 0.00265756
         }
       ]
     },
@@ -454,17 +454,17 @@
       "label": "上证指数",
       "role": "secondary",
       "overall": {
-        "observations": 863,
-        "direction_hits": 461,
-        "direction_hit_rate": 0.53418308,
-        "mean_next_day_return": 0.00027941,
-        "median_next_day_return": 0.00037233
+        "observations": 864,
+        "direction_hits": 462,
+        "direction_hit_rate": 0.53472222,
+        "mean_next_day_return": 0.00025127,
+        "median_next_day_return": 0.0003636
       },
       "state_ordering": {
         "published": true,
-        "ordered_adjacent_pairs": 4,
+        "ordered_adjacent_pairs": 3,
         "total_adjacent_pairs": 4,
-        "fully_monotonic": true
+        "fully_monotonic": false
       },
       "by_state": [
         {
@@ -481,11 +481,11 @@
           "level": -1,
           "label": "弱空",
           "published": true,
-          "observations": 146,
-          "direction_hits": 76,
-          "direction_hit_rate": 0.52054795,
-          "mean_next_day_return": -0.0010229,
-          "median_next_day_return": -0.00023759
+          "observations": 147,
+          "direction_hits": 77,
+          "direction_hit_rate": 0.52380952,
+          "mean_next_day_return": -0.0011794,
+          "median_next_day_return": -0.00034807
         },
         {
           "level": 0,
@@ -549,11 +549,11 @@
         {
           "year": 2026,
           "published": true,
-          "observations": 150,
-          "direction_hits": 84,
-          "direction_hit_rate": 0.56,
-          "mean_next_day_return": -0.00000508,
-          "median_next_day_return": 0.00083711
+          "observations": 151,
+          "direction_hits": 85,
+          "direction_hit_rate": 0.56291391,
+          "mean_next_day_return": -0.00016418,
+          "median_next_day_return": 0.00079978
         }
       ]
     }
