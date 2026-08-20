@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-08-19T12:10:15.189Z",
+  "generated_at": "2026-08-20T12:10:12.949Z",
   "methodology": "next_trading_session_price_return",
   "after_the_fact": true,
   "source": "aistk+cn_stock_db",
