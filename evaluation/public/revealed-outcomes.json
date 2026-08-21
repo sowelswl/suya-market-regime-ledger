@@ -1,10 +1,36 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-08-20T12:10:12.949Z",
+  "generated_at": "2026-08-21T12:10:12.498Z",
   "methodology": "next_trading_session_price_return",
   "after_the_fact": true,
   "source": "aistk+cn_stock_db",
   "records": [
+    {
+      "as_of_trade_date": "2026-08-14",
+      "outcome_trade_date": "2026-08-17",
+      "benchmarks": {
+        "csi500": {
+          "label": "中证500",
+          "return": 0.02431814
+        },
+        "hs300": {
+          "label": "沪深300",
+          "return": 0.01612129
+        },
+        "csi1000": {
+          "label": "中证1000",
+          "return": 0.02555529
+        },
+        "csi2000": {
+          "label": "中证2000",
+          "return": 0.02429235
+        },
+        "sse_composite": {
+          "label": "上证指数",
+          "return": 0.01412464
+        }
+      }
+    },
     {
       "as_of_trade_date": "2026-08-11",
       "outcome_trade_date": "2026-08-12",
