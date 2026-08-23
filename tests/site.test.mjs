@@ -28,6 +28,8 @@ test("the public site explains the ledger without requiring GitHub knowledge", a
   assert.match(html, /历史评价/)
   assert.match(html, /全历史、近 3 个月和近 1 个月/)
   assert.match(html, /id="evaluation-windows"/)
+  assert.match(html, /assets\/ledger\.css\?v=20260823-windows/)
+  assert.match(html, /assets\/ledger\.js\?v=20260823-windows/)
   assert.match(html, /每天一条[\s\S]*时序信号/)
   assert.match(html, /核心研究资产/)
   assert.match(html, /最近 20 个交易日/)
