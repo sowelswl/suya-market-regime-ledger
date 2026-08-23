@@ -38,6 +38,27 @@ test("historical evaluation publishes aggregate next-session evidence without th
   assert.equal(report.privacy.public_signal_window, 20)
   assert.equal(report.privacy.raw_historical_signals_published, false)
   assert.equal(report.scope.observations, 50)
+  assert.deepEqual(report.evaluation_windows.map((window) => ({
+    key: window.key,
+    start: window.start_date,
+    end: window.end_date,
+    observations: window.observations,
+  })), [
+    { key: "all", start: "2025-01-01", end: "2025-05-10", observations: 50 },
+    { key: "three_months", start: "2025-02-10", end: "2025-05-10", observations: 31 },
+    { key: "one_month", start: "2025-04-10", end: "2025-05-10", observations: 11 },
+  ])
+  assert.equal(report.evaluation_windows[1].benchmarks.csi500.direction_hit_rate, 0.64516129)
+  assert.equal(report.evaluation_windows[1].benchmarks.csi500.mean_directional_return, 0.00451613)
+  assert.equal(report.evaluation_windows[2].benchmarks.csi500.direction_hit_rate, 0.90909091)
+  assert.equal(report.evaluation_windows[2].benchmarks.csi500.mean_next_day_return, 0.01727273)
+  assert.deepEqual(Object.keys(report.evaluation_windows[0].benchmarks), [
+    "csi500",
+    "hs300",
+    "csi1000",
+    "csi2000",
+    "sse_composite",
+  ])
   assert.equal(report.benchmarks.csi500.overall.direction_hit_rate, 0.6)
   assert.equal(report.benchmarks.csi500.by_state.find((state) => state.level === 0).direction_hit_rate, 1)
   assert.equal(report.benchmarks.csi500.by_state.find((state) => state.level === -1).direction_hit_rate, 0)

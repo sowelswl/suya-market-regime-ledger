@@ -76,13 +76,21 @@
             <p class="eyebrow">RETROSPECTIVE EVALUATION</p>
             <h2 id="evaluation-title">全部历史用来评价，<br>不用来交出信号。</h2>
           </div>
-          <p>按 v1.2 固定口径，每条信号只评价下一交易日方向，并分别报告中证500、沪深300、中证1000、中证2000与上证指数。这里只公开聚合结果与数据快照哈希，不公开逐日历史信号序列。</p>
+          <p>按 v1.2 固定口径，每条信号只评价下一交易日方向，并分别报告中证500、沪深300、中证1000、中证2000与上证指数。先比较全历史、近 3 个月和近 1 个月，再查看五档状态与年度结构。</p>
         </div>
         <div class="evaluation-summary" aria-live="polite">
           <div><strong data-evaluation-observations>—</strong><span>可评价信号</span></div>
           <div><strong data-evaluation-range>—</strong><span>历史样本区间</span></div>
           <div><strong data-evaluation-policy>v1.2</strong><span>五个宽基 · 下一交易日</span></div>
         </div>
+        <div class="evaluation-window-heading">
+          <div><span>THREE WINDOWS</span><h3>同一套信号，三个时间尺度。</h3></div>
+          <p>近 1 个月与近 3 个月均以最新可评价信号日为锚点，按自然月回溯。“方向调整后平均次日”将空头信号对应的指数涨跌取反，仅用于方向评分，不代表实际组合收益。</p>
+        </div>
+        <div id="evaluation-windows" class="evaluation-window-grid" aria-live="polite">
+          <div class="evaluation-empty">正在读取多窗口表现……</div>
+        </div>
+        <div class="evaluation-detail-heading"><span>STATE BREAKDOWN</span><h3>五档状态与年度拆解</h3></div>
         <div id="evaluation-benchmarks" class="evaluation-benchmarks">
           <div class="evaluation-empty">正在读取历史聚合评价……</div>
         </div>

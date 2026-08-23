@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "policy_version": "1.2.0",
-  "generated_at": "2026-08-21T12:10:11.979Z",
+  "generated_at": "2026-08-23T09:48:45.417Z",
   "methodology": "next_trading_session_direction",
   "retrospective": true,
   "privacy": {
@@ -14,6 +14,185 @@
     "last_evaluated_signal_date": "2026-08-20",
     "observations": 866
   },
+  "evaluation_windows": [
+    {
+      "key": "all",
+      "label": "完整历史",
+      "start_date": "2023-01-30",
+      "end_date": "2026-08-20",
+      "observations": 866,
+      "benchmarks": {
+        "csi500": {
+          "label": "中证500",
+          "role": "primary",
+          "observations": 866,
+          "direction_hits": 450,
+          "direction_hit_rate": 0.51963048,
+          "mean_next_day_return": 0.0003667,
+          "mean_directional_return": 0.00157532,
+          "median_next_day_return": 0.00006653
+        },
+        "hs300": {
+          "label": "沪深300",
+          "role": "secondary",
+          "observations": 866,
+          "direction_hits": 456,
+          "direction_hit_rate": 0.52655889,
+          "mean_next_day_return": 0.00017081,
+          "mean_directional_return": 0.00112346,
+          "median_next_day_return": -0.00020907
+        },
+        "csi1000": {
+          "label": "中证1000",
+          "role": "secondary",
+          "observations": 866,
+          "direction_hits": 456,
+          "direction_hit_rate": 0.52655889,
+          "mean_next_day_return": 0.00026422,
+          "mean_directional_return": 0.00164274,
+          "median_next_day_return": 0.00086953
+        },
+        "csi2000": {
+          "label": "中证2000",
+          "role": "secondary",
+          "observations": 866,
+          "direction_hits": 471,
+          "direction_hit_rate": 0.54387991,
+          "mean_next_day_return": 0.00043862,
+          "mean_directional_return": 0.00171816,
+          "median_next_day_return": 0.00169303
+        },
+        "sse_composite": {
+          "label": "上证指数",
+          "role": "secondary",
+          "observations": 866,
+          "direction_hits": 462,
+          "direction_hit_rate": 0.5334873,
+          "mean_next_day_return": 0.00025389,
+          "mean_directional_return": 0.00105153,
+          "median_next_day_return": 0.00037464
+        }
+      }
+    },
+    {
+      "key": "three_months",
+      "label": "近 3 个月",
+      "start_date": "2026-05-20",
+      "end_date": "2026-08-20",
+      "observations": 66,
+      "benchmarks": {
+        "csi500": {
+          "label": "中证500",
+          "role": "primary",
+          "observations": 66,
+          "direction_hits": 36,
+          "direction_hit_rate": 0.54545455,
+          "mean_next_day_return": -0.00123838,
+          "mean_directional_return": 0.00361375,
+          "median_next_day_return": 0.00011467
+        },
+        "hs300": {
+          "label": "沪深300",
+          "role": "secondary",
+          "observations": 66,
+          "direction_hits": 35,
+          "direction_hit_rate": 0.53030303,
+          "mean_next_day_return": -0.00062812,
+          "mean_directional_return": 0.00240877,
+          "median_next_day_return": 0.00064821
+        },
+        "csi1000": {
+          "label": "中证1000",
+          "role": "secondary",
+          "observations": 66,
+          "direction_hits": 37,
+          "direction_hit_rate": 0.56060606,
+          "mean_next_day_return": -0.00198704,
+          "mean_directional_return": 0.00388576,
+          "median_next_day_return": 0.0010936
+        },
+        "csi2000": {
+          "label": "中证2000",
+          "role": "secondary",
+          "observations": 66,
+          "direction_hits": 42,
+          "direction_hit_rate": 0.63636364,
+          "mean_next_day_return": -0.00247128,
+          "mean_directional_return": 0.00341968,
+          "median_next_day_return": 0.0003559
+        },
+        "sse_composite": {
+          "label": "上证指数",
+          "role": "secondary",
+          "observations": 66,
+          "direction_hits": 33,
+          "direction_hit_rate": 0.5,
+          "mean_next_day_return": -0.00090272,
+          "mean_directional_return": 0.00232649,
+          "median_next_day_return": 0.00089942
+        }
+      }
+    },
+    {
+      "key": "one_month",
+      "label": "近 1 个月",
+      "start_date": "2026-07-20",
+      "end_date": "2026-08-20",
+      "observations": 24,
+      "benchmarks": {
+        "csi500": {
+          "label": "中证500",
+          "role": "primary",
+          "observations": 24,
+          "direction_hits": 13,
+          "direction_hit_rate": 0.54166667,
+          "mean_next_day_return": 0.00267121,
+          "mean_directional_return": 0.00023085,
+          "median_next_day_return": 0.00266746
+        },
+        "hs300": {
+          "label": "沪深300",
+          "role": "secondary",
+          "observations": 24,
+          "direction_hits": 13,
+          "direction_hit_rate": 0.54166667,
+          "mean_next_day_return": 0.00027364,
+          "mean_directional_return": -0.00056097,
+          "median_next_day_return": 0.00124864
+        },
+        "csi1000": {
+          "label": "中证1000",
+          "role": "secondary",
+          "observations": 24,
+          "direction_hits": 15,
+          "direction_hit_rate": 0.625,
+          "mean_next_day_return": 0.00389913,
+          "mean_directional_return": 0.00279462,
+          "median_next_day_return": 0.00606082
+        },
+        "csi2000": {
+          "label": "中证2000",
+          "role": "secondary",
+          "observations": 24,
+          "direction_hits": 15,
+          "direction_hit_rate": 0.625,
+          "mean_next_day_return": 0.00505846,
+          "mean_directional_return": 0.00436595,
+          "median_next_day_return": 0.01109519
+        },
+        "sse_composite": {
+          "label": "上证指数",
+          "role": "secondary",
+          "observations": 24,
+          "direction_hits": 12,
+          "direction_hit_rate": 0.5,
+          "mean_next_day_return": 0.00122656,
+          "mean_directional_return": 0.00038011,
+          "median_next_day_return": 0.00245467
+        }
+      }
+    }
+  ],
   "source_snapshot": {
     "signal_source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
     "market_return_source": "aistk.public.micro_timing_final_tail_hold_dates:csi500_return,hs300_return;cn_stock_db.public.cn_stock_index_price_daily_wind:000001.SH,000852.SH,932000.CSI",
@@ -30,6 +209,7 @@
         "direction_hits": 450,
         "direction_hit_rate": 0.51963048,
         "mean_next_day_return": 0.0003667,
+        "mean_directional_return": 0.00157532,
         "median_next_day_return": 0.00006653
       },
       "state_ordering": {
@@ -47,6 +227,7 @@
           "direction_hits": 81,
           "direction_hit_rate": 0.51265823,
           "mean_next_day_return": -0.0016657,
+          "mean_directional_return": 0.0016657,
           "median_next_day_return": -0.00043674
         },
         {
@@ -57,6 +238,7 @@
           "direction_hits": 79,
           "direction_hit_rate": 0.53020134,
           "mean_next_day_return": -0.001746,
+          "mean_directional_return": 0.001746,
           "median_next_day_return": -0.00032325
         },
         {
@@ -67,6 +249,7 @@
           "direction_hits": 169,
           "direction_hit_rate": 0.48011364,
           "mean_next_day_return": 0.00004366,
+          "mean_directional_return": 0.00004366,
           "median_next_day_return": -0.00051307
         },
         {
@@ -77,6 +260,7 @@
           "direction_hits": 67,
           "direction_hit_rate": 0.55371901,
           "mean_next_day_return": 0.00253332,
+          "mean_directional_return": 0.00253332,
           "median_next_day_return": 0.0015026
         },
         {
@@ -87,6 +271,7 @@
           "direction_hits": 54,
           "direction_hit_rate": 0.62790698,
           "mean_next_day_return": 0.00603479,
+          "mean_directional_return": 0.00603479,
           "median_next_day_return": 0.00336871
         }
       ],
@@ -98,6 +283,7 @@
           "direction_hits": 112,
           "direction_hit_rate": 0.49122807,
           "mean_next_day_return": -0.00062204,
+          "mean_directional_return": 0.00066962,
           "median_next_day_return": -0.00060348
         },
         {
@@ -107,6 +293,7 @@
           "direction_hits": 126,
           "direction_hit_rate": 0.52066116,
           "mean_next_day_return": 0.00026934,
+          "mean_directional_return": 0.00236938,
           "median_next_day_return": -0.00116889
         },
         {
@@ -116,6 +303,7 @@
           "direction_hits": 127,
           "direction_hit_rate": 0.52263374,
           "mean_next_day_return": 0.00140504,
+          "mean_directional_return": 0.00064917,
           "median_next_day_return": 0.00173509
         },
         {
@@ -125,6 +313,7 @@
           "direction_hits": 85,
           "direction_hit_rate": 0.55555556,
           "mean_next_day_return": 0.00034497,
+          "mean_directional_return": 0.00313998,
           "median_next_day_return": 0.00209692
         }
       ]
@@ -137,6 +326,7 @@
         "direction_hits": 456,
         "direction_hit_rate": 0.52655889,
         "mean_next_day_return": 0.00017081,
+        "mean_directional_return": 0.00112346,
         "median_next_day_return": -0.00020907
       },
       "state_ordering": {
@@ -154,6 +344,7 @@
           "direction_hits": 86,
           "direction_hit_rate": 0.5443038,
           "mean_next_day_return": -0.001091,
+          "mean_directional_return": 0.001091,
           "median_next_day_return": -0.00128368
         },
         {
@@ -164,6 +355,7 @@
           "direction_hits": 82,
           "direction_hit_rate": 0.55033557,
           "mean_next_day_return": -0.00161154,
+          "mean_directional_return": 0.00161154,
           "median_next_day_return": -0.00069754
         },
         {
@@ -174,6 +366,7 @@
           "direction_hits": 175,
           "direction_hit_rate": 0.49715909,
           "mean_next_day_return": 0.00018984,
+          "mean_directional_return": 0.00018984,
           "median_next_day_return": -0.00003669
         },
         {
@@ -184,6 +377,7 @@
           "direction_hits": 63,
           "direction_hit_rate": 0.52066116,
           "mean_next_day_return": 0.00161617,
+          "mean_directional_return": 0.00161617,
           "median_next_day_return": 0.00076508
         },
         {
@@ -194,6 +388,7 @@
           "direction_hits": 50,
           "direction_hit_rate": 0.58139535,
           "mean_next_day_return": 0.00346561,
+          "mean_directional_return": 0.00346561,
           "median_next_day_return": 0.00159072
         }
       ],
@@ -205,6 +400,7 @@
           "direction_hits": 106,
           "direction_hit_rate": 0.46491228,
           "mean_next_day_return": -0.00090939,
+          "mean_directional_return": 0.00030818,
           "median_next_day_return": -0.00188811
         },
         {
@@ -214,6 +410,7 @@
           "direction_hits": 133,
           "direction_hit_rate": 0.54958678,
           "mean_next_day_return": 0.00058941,
+          "mean_directional_return": 0.00214376,
           "median_next_day_return": -0.00019812
         },
         {
@@ -223,6 +420,7 @@
           "direction_hits": 134,
           "direction_hit_rate": 0.55144033,
           "mean_next_day_return": 0.00091393,
+          "mean_directional_return": 0.00027516,
           "median_next_day_return": 0.00114593
         },
         {
@@ -232,6 +430,7 @@
           "direction_hits": 83,
           "direction_hit_rate": 0.54248366,
           "mean_next_day_return": -0.00006183,
+          "mean_directional_return": 0.0020719,
           "median_next_day_return": 0.00013551
         }
       ]
@@ -244,6 +443,7 @@
         "direction_hits": 456,
         "direction_hit_rate": 0.52655889,
         "mean_next_day_return": 0.00026422,
+        "mean_directional_return": 0.00164274,
         "median_next_day_return": 0.00086953
       },
       "state_ordering": {
@@ -261,6 +461,7 @@
           "direction_hits": 77,
           "direction_hit_rate": 0.48734177,
           "mean_next_day_return": -0.00206026,
+          "mean_directional_return": 0.00206026,
           "median_next_day_return": 0.00025381
         },
         {
@@ -271,6 +472,7 @@
           "direction_hits": 74,
           "direction_hit_rate": 0.4966443,
           "mean_next_day_return": -0.00182132,
+          "mean_directional_return": 0.00182132,
           "median_next_day_return": 0.00003065
         },
         {
@@ -281,6 +483,7 @@
           "direction_hits": 176,
           "direction_hit_rate": 0.5,
           "mean_next_day_return": -0.00011921,
+          "mean_directional_return": -0.00011921,
           "median_next_day_return": -0.00003715
         },
         {
@@ -291,6 +494,7 @@
           "direction_hits": 71,
           "direction_hit_rate": 0.58677686,
           "mean_next_day_return": 0.00255711,
+          "mean_directional_return": 0.00255711,
           "median_next_day_return": 0.00321258
         },
         {
@@ -301,6 +505,7 @@
           "direction_hits": 58,
           "direction_hit_rate": 0.6744186,
           "mean_next_day_return": 0.00649148,
+          "mean_directional_return": 0.00649148,
           "median_next_day_return": 0.00424221
         }
       ],
@@ -312,6 +517,7 @@
           "direction_hits": 115,
           "direction_hit_rate": 0.50438596,
           "mean_next_day_return": -0.00060191,
+          "mean_directional_return": 0.00081109,
           "median_next_day_return": -0.00001849
         },
         {
@@ -321,6 +527,7 @@
           "direction_hits": 129,
           "direction_hit_rate": 0.53305785,
           "mean_next_day_return": 0.00018349,
+          "mean_directional_return": 0.00219193,
           "median_next_day_return": -0.0000304
         },
         {
@@ -330,6 +537,7 @@
           "direction_hits": 126,
           "direction_hit_rate": 0.51851852,
           "mean_next_day_return": 0.00129526,
+          "mean_directional_return": 0.0007267,
           "median_next_day_return": 0.00250931
         },
         {
@@ -339,6 +547,7 @@
           "direction_hits": 86,
           "direction_hit_rate": 0.5620915,
           "mean_next_day_return": 0.0000451,
+          "mean_directional_return": 0.00346828,
           "median_next_day_return": 0.00279101
         }
       ]
@@ -351,6 +560,7 @@
         "direction_hits": 471,
         "direction_hit_rate": 0.54387991,
         "mean_next_day_return": 0.00043862,
+        "mean_directional_return": 0.00171816,
         "median_next_day_return": 0.00169303
       },
       "state_ordering": {
@@ -368,6 +578,7 @@
           "direction_hits": 81,
           "direction_hit_rate": 0.51265823,
           "mean_next_day_return": -0.00230098,
+          "mean_directional_return": 0.00230098,
           "median_next_day_return": -0.0003868
         },
         {
@@ -378,6 +589,7 @@
           "direction_hits": 74,
           "direction_hit_rate": 0.4966443,
           "mean_next_day_return": -0.00127843,
+          "mean_directional_return": 0.00127843,
           "median_next_day_return": 0.00008993
         },
         {
@@ -388,6 +600,7 @@
           "direction_hits": 184,
           "direction_hit_rate": 0.52272727,
           "mean_next_day_return": -0.00013513,
+          "mean_directional_return": -0.00013513,
           "median_next_day_return": 0.00097771
         },
         {
@@ -398,6 +611,7 @@
           "direction_hits": 74,
           "direction_hit_rate": 0.61157025,
           "mean_next_day_return": 0.00318744,
+          "mean_directional_return": 0.00318744,
           "median_next_day_return": 0.00407954
         },
         {
@@ -408,6 +622,7 @@
           "direction_hits": 58,
           "direction_hit_rate": 0.6744186,
           "mean_next_day_return": 0.00692752,
+          "mean_directional_return": 0.00692752,
           "median_next_day_return": 0.00594618
         }
       ],
@@ -419,6 +634,7 @@
           "direction_hits": 122,
           "direction_hit_rate": 0.53508772,
           "mean_next_day_return": -0.00002172,
+          "mean_directional_return": 0.00113843,
           "median_next_day_return": 0.00031933
         },
         {
@@ -428,6 +644,7 @@
           "direction_hits": 132,
           "direction_hit_rate": 0.54545455,
           "mean_next_day_return": 0.00014675,
+          "mean_directional_return": 0.00205495,
           "median_next_day_return": 0.00132301
         },
         {
@@ -437,6 +654,7 @@
           "direction_hits": 126,
           "direction_hit_rate": 0.51851852,
           "mean_next_day_return": 0.00153492,
+          "mean_directional_return": 0.00094572,
           "median_next_day_return": 0.00290057
         },
         {
@@ -446,6 +664,7 @@
           "direction_hits": 91,
           "direction_hit_rate": 0.59477124,
           "mean_next_day_return": -0.00015494,
+          "mean_directional_return": 0.00327617,
           "median_next_day_return": 0.00265756
         }
       ]
@@ -458,6 +677,7 @@
         "direction_hits": 462,
         "direction_hit_rate": 0.5334873,
         "mean_next_day_return": 0.00025389,
+        "mean_directional_return": 0.00105153,
         "median_next_day_return": 0.00037464
       },
       "state_ordering": {
@@ -475,6 +695,7 @@
           "direction_hits": 80,
           "direction_hit_rate": 0.50632911,
           "mean_next_day_return": -0.00110617,
+          "mean_directional_return": 0.00110617,
           "median_next_day_return": -0.00016257
         },
         {
@@ -485,6 +706,7 @@
           "direction_hits": 77,
           "direction_hit_rate": 0.51677852,
           "mean_next_day_return": -0.00114499,
+          "mean_directional_return": 0.00114499,
           "median_next_day_return": -0.00012711
         },
         {
@@ -495,6 +717,7 @@
           "direction_hits": 186,
           "direction_hit_rate": 0.52840909,
           "mean_next_day_return": 0.00036395,
+          "mean_directional_return": 0.00036395,
           "median_next_day_return": 0.00040114
         },
         {
@@ -505,6 +728,7 @@
           "direction_hits": 68,
           "direction_hit_rate": 0.56198347,
           "mean_next_day_return": 0.00134256,
+          "mean_directional_return": 0.00134256,
           "median_next_day_return": 0.00081672
         },
         {
@@ -515,6 +739,7 @@
           "direction_hits": 51,
           "direction_hit_rate": 0.59302326,
           "mean_next_day_return": 0.00319404,
+          "mean_directional_return": 0.00319404,
           "median_next_day_return": 0.00138226
         }
       ],
@@ -526,6 +751,7 @@
           "direction_hits": 113,
           "direction_hit_rate": 0.49561404,
           "mean_next_day_return": -0.00040552,
+          "mean_directional_return": 0.00024713,
           "median_next_day_return": -0.00054918
         },
         {
@@ -535,6 +761,7 @@
           "direction_hits": 128,
           "direction_hit_rate": 0.52892562,
           "mean_next_day_return": 0.0004793,
+          "mean_directional_return": 0.00167746,
           "median_next_day_return": 0.00023462
         },
         {
@@ -544,6 +771,7 @@
           "direction_hits": 136,
           "direction_hit_rate": 0.55967078,
           "mean_next_day_return": 0.00089859,
+          "mean_directional_return": 0.00050632,
           "median_next_day_return": 0.0010595
         },
         {
@@ -553,6 +781,7 @@
           "direction_hits": 85,
           "direction_hit_rate": 0.55555556,
           "mean_next_day_return": -0.00014394,
+          "mean_directional_return": 0.00212613,
           "median_next_day_return": 0.00079978
         }
       ]

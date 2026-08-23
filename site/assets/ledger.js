@@ -11,6 +11,12 @@ const OUTCOME_ORDER = [
   ["sse_composite", "上证指数"],
 ]
 
+const WINDOW_LABELS = {
+  all: "完整历史",
+  three_months: "近 3 个月",
+  one_month: "近 1 个月",
+}
+
 export function canonicalize(value) {
   if (value === null) return "null"
   if (typeof value === "string" || typeof value === "boolean") return JSON.stringify(value)
@@ -123,6 +129,47 @@ function appendTable(parent, rows, columns, label) {
   parent.append(wrapper)
 }
 
+function renderEvaluationWindows(report) {
+  const container = document.querySelector("#evaluation-windows")
+  if (!container) return
+  const windows = Array.isArray(report?.evaluation_windows) ? report.evaluation_windows : []
+  if (windows.length === 0) {
+    container.textContent = "多窗口评价暂不可用"
+    return
+  }
+
+  container.replaceChildren()
+  for (const window of windows) {
+    const card = document.createElement("article")
+    card.className = `evaluation-window-card ${window.key === "all" ? "is-primary" : ""}`.trim()
+
+    const header = document.createElement("header")
+    header.className = "evaluation-window-card-head"
+    const title = document.createElement("h3")
+    title.textContent = WINDOW_LABELS[window.key] ?? window.label
+    const count = document.createElement("strong")
+    count.textContent = String(window.observations)
+    const countLabel = document.createElement("span")
+    countLabel.textContent = "个可评价信号"
+    const period = document.createElement("small")
+    period.textContent = `${formatDate(window.start_date)} — ${formatDate(window.end_date)}`
+    header.append(title, count, countLabel, period)
+    card.append(header)
+
+    appendTable(
+      card,
+      Object.values(window.benchmarks ?? {}),
+      [
+        { label: "指数", value: (row) => row.label },
+        { label: "方向命中", value: (row) => formatPercent(row.direction_hit_rate) },
+        { label: "方向后平均次日", value: (row) => formatPercent(row.mean_directional_return, 2) },
+      ],
+      `${WINDOW_LABELS[window.key] ?? window.label}五指数方向命中与平均次日表现`,
+    )
+    container.append(card)
+  }
+}
+
 function renderEvaluation(report) {
   const container = document.querySelector("#evaluation-benchmarks")
   if (!container) return
@@ -134,6 +181,7 @@ function renderEvaluation(report) {
   text("[data-evaluation-observations]", String(report.scope.observations))
   text("[data-evaluation-range]", `${formatDate(report.scope.first_signal_date)} — ${formatDate(report.scope.last_evaluated_signal_date)}`)
   text("[data-evaluation-policy]", `v${report.policy_version}`)
+  renderEvaluationWindows(report)
   container.replaceChildren()
 
   for (const benchmark of Object.values(report.benchmarks)) {
