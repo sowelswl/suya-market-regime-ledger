@@ -1,0 +1,14 @@
+{
+  "schema_version": "2.0",
+  "sequence": 22,
+  "previous_commitment": "sha256:72aa7946b79e880a2df3ba42c034d3e250472e4f5605aaa061440bad1f43f3f3",
+  "source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
+  "as_of_trade_date": "2026-09-10",
+  "prediction_horizon": "next_trading_session",
+  "committed_at": "2026-09-10T20:10:11+08:00",
+  "source_generated_at": "2026-09-10T03:05:24.226Z",
+  "reveal_after_observations": 5,
+  "algorithm": "SHA-256",
+  "canonicalization": "RFC8785-JCS",
+  "commitment": "sha256:e6589c6503758a00541eb9a29846734e47ada6bbb2a62967035c8c526bd47bed"
+}
