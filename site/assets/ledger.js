@@ -324,9 +324,36 @@ function renderHistory(records, verifiedDates, invalidatedDates) {
   }
 }
 
+export function retrospectiveRows(report) {
+  return (report?.records ?? []).map((record) => ({
+    date: record.as_of_trade_date,
+    state: record.status === "retrospective" ? record.signal_label : "等待满 5 个后续交易观测日",
+    evidence: "事后补录 · 无事前证明",
+    recordedAt: report.recorded_at,
+  }))
+}
+
+function renderRetrospective(report) {
+  const container = document.querySelector("#retrospective-list")
+  if (!container) return
+  container.replaceChildren()
+  const rows = retrospectiveRows(report)
+  if (rows.length === 0) {
+    container.textContent = "当前窗口内没有事后补录记录。"
+    return
+  }
+  appendTable(container, rows, [
+    { label: "信号日期", value: (row) => row.date },
+    { label: "市场状态", value: (row) => row.state },
+    { label: "证据性质", value: (row) => row.evidence },
+    { label: "补录时间（北京时间）", value: (row) => new Intl.DateTimeFormat("zh-CN", { timeZone: "Asia/Shanghai", dateStyle: "short", timeStyle: "short" }).format(new Date(row.recordedAt)) },
+  ], "漏发信号的事后补录")
+}
+
 async function render(data) {
   const records = Array.isArray(data.records) ? data.records : []
   renderEvaluation(data.historical_evaluation)
+  renderRetrospective(data.retrospective_signals)
   const invalidatedDates = new Set(records
     .filter((record) => invalidationFor(record))
     .map((record) => record.commitment.as_of_trade_date))

@@ -14,6 +14,9 @@
 - 从 `$HOME/.secrets/shared.env` 读取数据库配置，LaunchAgent 配置文件不包含密码，也不写入密码或 token；
 - 私有 reveal 保存在 `$HOME/.secrets/suya-market-regime-ledger`；
 - Publisher 只暂存和提交公开证据文件，不会提交运行副本中的其他改动；
+- Publisher 在权限受限的临时副本中生成、揭示和构建；数据库或构建中断不会把半成品留在运行副本中，失败现场保留在日志指明的私有目录。完整快照通过后才保存私有揭示、快进合入并推送；
+- 同日再次执行复用已经存在的承诺，不覆盖原哈希与私有揭示。推送失败仍需独立审计核对实际公开时间，不能把迟到发布视为原日期的事前证明；
+- `research-archive/retrospective-request.json` 只登记经用户要求补录的日期；每日刷新其公开窗口与五个后续观测日门槛。补录数据在独立字段中展示，不加入 commitment 链；
 - 不使用 Healthchecks，也不恢复原来的 watchdog LaunchAgent。
 
 运行副本位于 `$HOME/.local/share/suya-market-regime-ledger/repo`，日志位于 `$HOME/.local/state/suya-market-regime-ledger`。首次安装或修复时运行 `ops/install-launchd.sh`。

@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "after_the_fact": true,
+  "prospective_evidence": false,
+  "recorded_at": "2026-10-20T22:37:40+08:00",
+  "records": [
+    {
+      "as_of_trade_date": "2026-10-19",
+      "source_generated_at": "2026-10-19T03:05:26.323Z",
+      "status": "awaiting_observations"
+    },
+    {
+      "as_of_trade_date": "2026-10-16",
+      "source_generated_at": "2026-10-16T03:05:23.952Z",
+      "status": "awaiting_observations"
+    },
+    {
+      "as_of_trade_date": "2026-10-15",
+      "source_generated_at": "2026-10-15T03:05:23.489Z",
+      "status": "awaiting_observations"
+    },
+    {
+      "as_of_trade_date": "2026-10-14",
+      "source_generated_at": "2026-10-14T03:05:23.680Z",
+      "status": "awaiting_observations"
+    },
+    {
+      "as_of_trade_date": "2026-10-13",
+      "source_generated_at": "2026-10-13T03:05:22.723Z",
+      "status": "retrospective",
+      "signal_level": -2,
+      "signal_label": "强空"
+    },
+    {
+      "as_of_trade_date": "2026-10-12",
+      "source_generated_at": "2026-10-12T03:05:23.876Z",
+      "status": "retrospective",
+      "signal_level": -2,
+      "signal_label": "强空"
+    },
+    {
+      "as_of_trade_date": "2026-10-09",
+      "source_generated_at": "2026-10-09T03:05:24.416Z",
+      "status": "retrospective",
+      "signal_level": -2,
+      "signal_label": "强空"
+    },
+    {
+      "as_of_trade_date": "2026-10-08",
+      "source_generated_at": "2026-10-08T03:05:22.699Z",
+      "status": "retrospective",
+      "signal_level": 1,
+      "signal_label": "弱多"
+    }
+  ]
+}
