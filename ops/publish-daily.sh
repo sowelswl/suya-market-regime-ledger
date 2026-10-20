@@ -120,8 +120,11 @@ mkdir -p "$private_root/pending"
 chmod 700 "$private_root" "$private_root/pending"
 pending_file="$LEDGER_PRIVATE_ROOT/pending/$as_of_date.json"
 if [[ -f "$pending_file" ]]; then
-  cp -np "$pending_file" "$private_root/pending/$as_of_date.json"
-  cmp -s "$pending_file" "$private_root/pending/$as_of_date.json"
+  if [[ -f "$private_root/pending/$as_of_date.json" ]]; then
+    cmp -s "$pending_file" "$private_root/pending/$as_of_date.json"
+  else
+    cp -p "$pending_file" "$private_root/pending/$as_of_date.json"
+  fi
 fi
 cd "$ledger_repo"
 git fetch --quiet "$publication_stage/repo" main
