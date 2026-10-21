@@ -22,7 +22,9 @@
     {
       "as_of_trade_date": "2026-10-14",
       "source_generated_at": "2026-10-14T03:05:23.680Z",
-      "status": "awaiting_observations"
+      "status": "retrospective",
+      "signal_level": 0,
+      "signal_label": "看平"
     },
     {
       "as_of_trade_date": "2026-10-13",
