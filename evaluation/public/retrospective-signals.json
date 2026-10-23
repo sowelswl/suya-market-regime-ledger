@@ -12,12 +12,16 @@
     {
       "as_of_trade_date": "2026-10-16",
       "source_generated_at": "2026-10-16T03:05:23.952Z",
-      "status": "awaiting_observations"
+      "status": "retrospective",
+      "signal_level": 0,
+      "signal_label": "看平"
     },
     {
       "as_of_trade_date": "2026-10-15",
       "source_generated_at": "2026-10-15T03:05:23.489Z",
-      "status": "awaiting_observations"
+      "status": "retrospective",
+      "signal_level": 0,
+      "signal_label": "看平"
     },
     {
       "as_of_trade_date": "2026-10-14",
