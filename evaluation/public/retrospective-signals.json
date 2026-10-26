@@ -7,7 +7,9 @@
     {
       "as_of_trade_date": "2026-10-19",
       "source_generated_at": "2026-10-19T03:05:26.323Z",
-      "status": "awaiting_observations"
+      "status": "retrospective",
+      "signal_level": 1,
+      "signal_label": "弱多"
     },
     {
       "as_of_trade_date": "2026-10-16",
