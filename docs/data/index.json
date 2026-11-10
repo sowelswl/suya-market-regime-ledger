@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-11-09T20:10:09+08:00",
+  "generated_at": "2026-11-10T20:10:10+08:00",
   "source_repository": "https://github.com/sowelswl/suya-market-regime-ledger",
   "privacy": {
     "public_signal_window": 20,
@@ -10,7 +10,7 @@
   "historical_evaluation": {
     "schema_version": "1.0",
     "policy_version": "1.2.0",
-    "generated_at": "2026-11-09T12:10:15.621Z",
+    "generated_at": "2026-11-10T12:10:16.037Z",
     "methodology": "next_trading_session_direction",
     "retrospective": true,
     "privacy": {
@@ -1269,6 +1269,25 @@
     {
       "commitment": {
         "schema_version": "2.0",
+        "sequence": 51,
+        "previous_commitment": "sha256:3a0c5ae53ba8e9b03c00ceea460b76c316dc2dace10545addf183972a6774a83",
+        "source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
+        "as_of_trade_date": "2026-11-10",
+        "prediction_horizon": "next_trading_session",
+        "committed_at": "2026-11-10T20:10:10+08:00",
+        "source_generated_at": "2026-11-10T03:05:24.742Z",
+        "reveal_after_observations": 5,
+        "algorithm": "SHA-256",
+        "canonicalization": "RFC8785-JCS",
+        "commitment": "sha256:5a469907db176491f6c87d1b3974bf04a5f512facf37457dcd269e96ed8c6935"
+      },
+      "reveal": null,
+      "outcome": null,
+      "corrections": []
+    },
+    {
+      "commitment": {
+        "schema_version": "2.0",
         "sequence": 50,
         "previous_commitment": "sha256:3ba6521de6b9eb04ae0f9066378603a5717a27fa911f81bb7eef6d83e713795e",
         "source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
@@ -1357,8 +1376,45 @@
         "canonicalization": "RFC8785-JCS",
         "commitment": "sha256:a9a8ca2dc0a53434861468255d6ba96fd43cd655b959cdf154ebc94413c42a38"
       },
-      "reveal": null,
-      "outcome": null,
+      "reveal": {
+        "schema_version": "2.0",
+        "sequence": 46,
+        "previous_commitment": "sha256:d63cd7288beb3bbdd3d2c744938f3186e9a4ef1f859436a9bafdbc18198658e7",
+        "source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
+        "as_of_trade_date": "2026-11-03",
+        "prediction_horizon": "next_trading_session",
+        "committed_at": "2026-11-03T20:10:10+08:00",
+        "source_generated_at": "2026-11-03T03:05:25.343Z",
+        "signal_level": 1,
+        "signal_label": "弱多",
+        "nonce": "889c2e062eb415b4a3124487b9afd8e3273e381ee98d4eacebcb444edd870d4c"
+      },
+      "outcome": {
+        "as_of_trade_date": "2026-11-03",
+        "outcome_trade_date": "2026-11-04",
+        "benchmarks": {
+          "csi500": {
+            "label": "中证500",
+            "return": 0.04662204
+          },
+          "hs300": {
+            "label": "沪深300",
+            "return": 0.02306635
+          },
+          "csi1000": {
+            "label": "中证1000",
+            "return": 0.04670781
+          },
+          "csi2000": {
+            "label": "中证2000",
+            "return": 0.03411793
+          },
+          "sse_composite": {
+            "label": "上证指数",
+            "return": 0.02163743
+          }
+        }
+      },
       "corrections": []
     },
     {
@@ -2148,62 +2204,6 @@
           "sse_composite": {
             "label": "上证指数",
             "return": -0.01665222
-          }
-        }
-      },
-      "corrections": []
-    },
-    {
-      "commitment": {
-        "schema_version": "2.0",
-        "sequence": 31,
-        "previous_commitment": "sha256:c9e9d3bcb56adddb8c56f997d28f77184c74fc217bfb3c72bb291861b7826d00",
-        "source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
-        "as_of_trade_date": "2026-09-23",
-        "prediction_horizon": "next_trading_session",
-        "committed_at": "2026-09-23T20:10:09+08:00",
-        "source_generated_at": "2026-09-23T03:05:27.274Z",
-        "reveal_after_observations": 5,
-        "algorithm": "SHA-256",
-        "canonicalization": "RFC8785-JCS",
-        "commitment": "sha256:a0a98a6db82550219161265401a6f4aac0c3b7ea2cb4278c76b8d39c9bdc97f6"
-      },
-      "reveal": {
-        "schema_version": "2.0",
-        "sequence": 31,
-        "previous_commitment": "sha256:c9e9d3bcb56adddb8c56f997d28f77184c74fc217bfb3c72bb291861b7826d00",
-        "source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
-        "as_of_trade_date": "2026-09-23",
-        "prediction_horizon": "next_trading_session",
-        "committed_at": "2026-09-23T20:10:09+08:00",
-        "source_generated_at": "2026-09-23T03:05:27.274Z",
-        "signal_level": 0,
-        "signal_label": "看平",
-        "nonce": "63713cfd0caaf7380852d0f400e07ff9c3ce1acea6ade11e5612d5fa479b411e"
-      },
-      "outcome": {
-        "as_of_trade_date": "2026-09-23",
-        "outcome_trade_date": "2026-09-24",
-        "benchmarks": {
-          "csi500": {
-            "label": "中证500",
-            "return": -0.02152899
-          },
-          "hs300": {
-            "label": "沪深300",
-            "return": -0.01729802
-          },
-          "csi1000": {
-            "label": "中证1000",
-            "return": -0.02264781
-          },
-          "csi2000": {
-            "label": "中证2000",
-            "return": -0.01538749
-          },
-          "sse_composite": {
-            "label": "上证指数",
-            "return": -0.01223162
           }
         }
       },
