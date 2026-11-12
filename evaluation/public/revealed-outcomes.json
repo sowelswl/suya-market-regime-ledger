@@ -1,10 +1,62 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-11-10T12:10:16.891Z",
+  "generated_at": "2026-11-12T12:10:16.705Z",
   "methodology": "next_trading_session_price_return",
   "after_the_fact": true,
   "source": "aistk+cn_stock_db",
   "records": [
+    {
+      "as_of_trade_date": "2026-11-05",
+      "outcome_trade_date": "2026-11-06",
+      "benchmarks": {
+        "csi500": {
+          "label": "中证500",
+          "return": -0.02129973
+        },
+        "hs300": {
+          "label": "沪深300",
+          "return": -0.01437493
+        },
+        "csi1000": {
+          "label": "中证1000",
+          "return": -0.02177247
+        },
+        "csi2000": {
+          "label": "中证2000",
+          "return": -0.02394141
+        },
+        "sse_composite": {
+          "label": "上证指数",
+          "return": -0.01103821
+        }
+      }
+    },
+    {
+      "as_of_trade_date": "2026-11-04",
+      "outcome_trade_date": "2026-11-05",
+      "benchmarks": {
+        "csi500": {
+          "label": "中证500",
+          "return": 0.01795522
+        },
+        "hs300": {
+          "label": "沪深300",
+          "return": 0.00294294
+        },
+        "csi1000": {
+          "label": "中证1000",
+          "return": 0.02124294
+        },
+        "csi2000": {
+          "label": "中证2000",
+          "return": 0.02660539
+        },
+        "sse_composite": {
+          "label": "上证指数",
+          "return": 0.0010146
+        }
+      }
+    },
     {
       "as_of_trade_date": "2026-11-03",
       "outcome_trade_date": "2026-11-04",
@@ -366,32 +418,6 @@
         "sse_composite": {
           "label": "上证指数",
           "return": 0.00178627
-        }
-      }
-    },
-    {
-      "as_of_trade_date": "2026-09-24",
-      "outcome_trade_date": "2026-09-28",
-      "benchmarks": {
-        "csi500": {
-          "label": "中证500",
-          "return": -0.02908814
-        },
-        "hs300": {
-          "label": "沪深300",
-          "return": -0.02216195
-        },
-        "csi1000": {
-          "label": "中证1000",
-          "return": -0.03645507
-        },
-        "csi2000": {
-          "label": "中证2000",
-          "return": -0.03264862
-        },
-        "sse_composite": {
-          "label": "上证指数",
-          "return": -0.01665222
         }
       }
     }
