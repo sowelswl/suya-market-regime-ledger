@@ -1,0 +1,13 @@
+{
+  "schema_version": "2.0",
+  "sequence": 49,
+  "previous_commitment": "sha256:0e0660ee1c339f110b43649bdfbb3724d731eb77889e8fbeb7f43011f5c03984",
+  "source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
+  "as_of_trade_date": "2026-11-06",
+  "prediction_horizon": "next_trading_session",
+  "committed_at": "2026-11-06T20:10:10+08:00",
+  "source_generated_at": "2026-11-06T03:05:23.222Z",
+  "signal_level": 1,
+  "signal_label": "弱多",
+  "nonce": "d2e4999efd4753d1c943b0526a4db362c1cd91931acb73670d3a39848dd1ed57"
+}
