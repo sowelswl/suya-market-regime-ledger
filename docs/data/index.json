@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-11-17T20:10:11+08:00",
+  "generated_at": "2026-11-18T20:10:12+08:00",
   "source_repository": "https://github.com/sowelswl/suya-market-regime-ledger",
   "privacy": {
     "public_signal_window": 20,
@@ -10,7 +10,7 @@
   "historical_evaluation": {
     "schema_version": "1.0",
     "policy_version": "1.2.0",
-    "generated_at": "2026-11-17T12:10:17.153Z",
+    "generated_at": "2026-11-18T12:10:17.308Z",
     "methodology": "next_trading_session_direction",
     "retrospective": true,
     "privacy": {
@@ -1206,66 +1206,28 @@
     "after_the_fact": true,
     "prospective_evidence": false,
     "recorded_at": "2026-10-20T22:37:40+08:00",
-    "records": [
-      {
-        "as_of_trade_date": "2026-10-19",
-        "source_generated_at": "2026-10-19T03:05:26.323Z",
-        "status": "retrospective",
-        "signal_level": 1,
-        "signal_label": "弱多"
-      },
-      {
-        "as_of_trade_date": "2026-10-16",
-        "source_generated_at": "2026-10-16T03:05:23.952Z",
-        "status": "retrospective",
-        "signal_level": 0,
-        "signal_label": "看平"
-      },
-      {
-        "as_of_trade_date": "2026-10-15",
-        "source_generated_at": "2026-10-15T03:05:23.489Z",
-        "status": "retrospective",
-        "signal_level": 0,
-        "signal_label": "看平"
-      },
-      {
-        "as_of_trade_date": "2026-10-14",
-        "source_generated_at": "2026-10-14T03:05:23.680Z",
-        "status": "retrospective",
-        "signal_level": 0,
-        "signal_label": "看平"
-      },
-      {
-        "as_of_trade_date": "2026-10-13",
-        "source_generated_at": "2026-10-13T03:05:22.723Z",
-        "status": "retrospective",
-        "signal_level": -2,
-        "signal_label": "强空"
-      },
-      {
-        "as_of_trade_date": "2026-10-12",
-        "source_generated_at": "2026-10-12T03:05:23.876Z",
-        "status": "retrospective",
-        "signal_level": -2,
-        "signal_label": "强空"
-      },
-      {
-        "as_of_trade_date": "2026-10-09",
-        "source_generated_at": "2026-10-09T03:05:24.416Z",
-        "status": "retrospective",
-        "signal_level": -2,
-        "signal_label": "强空"
-      },
-      {
-        "as_of_trade_date": "2026-10-08",
-        "source_generated_at": "2026-10-08T03:05:22.699Z",
-        "status": "retrospective",
-        "signal_level": 1,
-        "signal_label": "弱多"
-      }
-    ]
+    "records": []
   },
   "records": [
+    {
+      "commitment": {
+        "schema_version": "2.0",
+        "sequence": 56,
+        "previous_commitment": "sha256:10af6a15c936d49556e202dc3e13a493e24cc421337c0d872459379b9999d1f6",
+        "source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
+        "as_of_trade_date": "2026-11-18",
+        "prediction_horizon": "next_trading_session",
+        "committed_at": "2026-11-18T20:10:12+08:00",
+        "source_generated_at": "2026-11-18T03:05:06.238Z",
+        "reveal_after_observations": 5,
+        "algorithm": "SHA-256",
+        "canonicalization": "RFC8785-JCS",
+        "commitment": "sha256:fe9d9054ea05dd6aff418bcec79c729d089085d4356a6c96bfa5200b193fed5d"
+      },
+      "reveal": null,
+      "outcome": null,
+      "corrections": []
+    },
     {
       "commitment": {
         "schema_version": "2.0",
@@ -2181,70 +2143,6 @@
         }
       },
       "corrections": []
-    },
-    {
-      "commitment": {
-        "schema_version": "2.0",
-        "sequence": 36,
-        "previous_commitment": "sha256:ca04e9268e3528c220ac05c3adc7d6a945ae6338dfbeb7a21ead5ce77e804e1f",
-        "source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
-        "as_of_trade_date": "2026-10-08",
-        "prediction_horizon": "next_trading_session",
-        "committed_at": "2026-10-08T20:13:59+08:00",
-        "source_generated_at": "2026-10-08T03:05:22.699Z",
-        "reveal_after_observations": 5,
-        "algorithm": "SHA-256",
-        "canonicalization": "RFC8785-JCS",
-        "commitment": "sha256:9b1201345ba6423815bb63b41789eecc762a9150789bcc59c522760e3bf981e1"
-      },
-      "reveal": {
-        "schema_version": "2.0",
-        "sequence": 36,
-        "previous_commitment": "sha256:ca04e9268e3528c220ac05c3adc7d6a945ae6338dfbeb7a21ead5ce77e804e1f",
-        "source": "signal_db.public.jq_time_series_signal_daily:ret_trend_lev_ma_5level_calendar@3.2#98bc3197708958de:IC.CFE",
-        "as_of_trade_date": "2026-10-08",
-        "prediction_horizon": "next_trading_session",
-        "committed_at": "2026-10-08T20:13:59+08:00",
-        "source_generated_at": "2026-10-08T03:05:22.699Z",
-        "signal_level": 1,
-        "signal_label": "弱多",
-        "nonce": "90fddc45f0ca24acdaf4e826b937ffda9156d8e60f72f4f6b80087940585be57"
-      },
-      "outcome": {
-        "as_of_trade_date": "2026-10-08",
-        "outcome_trade_date": "2026-10-09",
-        "benchmarks": {
-          "csi500": {
-            "label": "中证500",
-            "return": 0.00035594
-          },
-          "hs300": {
-            "label": "沪深300",
-            "return": 0.00161706
-          },
-          "csi1000": {
-            "label": "中证1000",
-            "return": 0.00242765
-          },
-          "csi2000": {
-            "label": "中证2000",
-            "return": 0.00042428
-          },
-          "sse_composite": {
-            "label": "上证指数",
-            "return": 0.00049582
-          }
-        }
-      },
-      "corrections": [
-        {
-          "as_of_trade_date": "2026-10-08",
-          "recorded_at": "2026-10-20T22:15:23+08:00",
-          "original_commitment": "sha256:9b1201345ba6423815bb63b41789eecc762a9150789bcc59c522760e3bf981e1",
-          "reason": "该记录于2026-10-08在本机生成，但发布在市场结果构建阶段失败，直到2026-10-20才首次上传公开仓库，不具备2026-10-08的事前公开时间证明，排除于事前承诺评价。2026-10-09、12、13、14、15、16、19未形成公开事前承诺；缺口保留，不倒填承诺时间，相关历史信号仅纳入明确标注的回溯聚合评价。",
-          "action": "invalidate"
-        }
-      ]
     }
   ]
 }
